@@ -47,7 +47,7 @@
 			else if (result.data){
 				console.log(`result.data.signIn: ${result.data.signIn}`);
 				sessionToken.set(result.data.signIn);
-				window.open("/home");
+				window.open("/dashboard", "_self");
 			}
 		});
 	};
