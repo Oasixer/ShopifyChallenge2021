@@ -3,23 +3,22 @@
 	const getUser = operationStore(`
     query {
 			getUser {
-				id,
-				email,
-				createdAt,
-				updatedAt
+				files {
+					documentType
+				}
 			}
 		}
   `);
 		query(getUser);
 		getUser.subscribe(value => {
 			if(value.fetching){
-					console.log("loading user");
+					console.log("loading user files");
 			}
 			else if(value.error){
 					console.error("graphql error loading user: " + value.error)
 			}
 			else{
-				console.log(`graphql value (user): ${value.data.getUser.email}`);
+				console.log(`graphql value (user): ${value.data.getUser.files}`);
 			}
 		});
 </script>
