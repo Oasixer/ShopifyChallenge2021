@@ -8,7 +8,7 @@
 		<div id='newHereInner'>
 			New here?
 		</div>
-		<a href='/login' target='_self'>Create an account</a>
+		<a href='/register' target='_self'>Create an account</a>
 	</div>
 	<div id='loginMain'>
 		<LoginFields/>

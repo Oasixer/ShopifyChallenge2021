@@ -1,4 +1,6 @@
+@import '../scss/standard_stuff.scss';
 main.fullscreen-flex-page{
+	@include force-width(100vw);
   min-height: 100vh;
   height: fit-content;
   overflow: hidden;

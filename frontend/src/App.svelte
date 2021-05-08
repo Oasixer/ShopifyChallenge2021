@@ -1,7 +1,7 @@
 <script>
 	import { Router } from "@roxi/routify";
 	import { routes } from "../.routify/routes"; // this is a build time import
-
+	
 	// graphql stuff
 	import { initClient, query, operationStore } from "@urql/svelte";
 
@@ -37,4 +37,3 @@
 <style src="./app.scss" global></style>
 
 <Router {routes}/>
-
