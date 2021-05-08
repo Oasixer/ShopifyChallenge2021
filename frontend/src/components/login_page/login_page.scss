@@ -16,9 +16,10 @@ div#loginPageMain{
 	align-items: center;
 	background-color: $bg_0;
 	h1#loginTitle{
-		@include bold-title-lighter;
+		@include bold-title;
 		color: $text_0;
-		margin-bottom: 20px;
+		margin-bottom: 1em;
+		font-size: 40px;
 		text-align: center;
 	}
 	div#newHere{

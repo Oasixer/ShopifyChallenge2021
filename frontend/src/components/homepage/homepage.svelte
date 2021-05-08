@@ -22,8 +22,8 @@
 						today
 					</div>
 				</div>
-				<div id='jk-text'>
-					ImgHub is a secure image hosting site that puts privacy first
+				<div id='lower-text'>
+					ImgHub is a secure image hosting site that puts privacy first and also please hire me shopify
 				</div>
 				<div id='register-bar'>
 					<input type="text" bind:value={emailVal}

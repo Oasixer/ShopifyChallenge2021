@@ -35,7 +35,7 @@ div#landing-page-main{
 			}
 			div#landing-page-text{
 				flex: 0 1 40%;
-				div#we-believe-in-you{
+				div#start-uploading-today{
 					flex-flow: row nowrap;
 					margin: 50px 0;
 					div{
@@ -48,17 +48,17 @@ div#landing-page-main{
 						flex: 0 0 auto;
 					}
 
-					div#we-believe-in{
+					div#start-uploading{
 						color: #FFFFFF;
 						font-size: 68px;
 					}
-					div#you{
+					div#today{
 						color: #BB2299;
 						font-size: 89px;
 						margin-left: 0.3em;
 					}
 				}
-				div#jk-text{
+				div#lower-text{
 					font-family: $poppins;
 					font-style: normal;
 					font-weight: 300;
