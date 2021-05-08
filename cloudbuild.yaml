@@ -1,7 +1,7 @@
 steps:
-  - id: 'pull_latest_image'
-    name: 'gcr.io/cloud-builders/docker'
-    args: ['pull', 'gcr.io/$PROJECT_ID/shopify2021:latest']
+  # - id: 'pull_latest_image'
+    # name: 'gcr.io/cloud-builders/docker'
+    # args: ['pull', 'gcr.io/$PROJECT_ID/shopify2021:latest']
 
   - id: 'build'
     name: 'gcr.io/cloud-builders/docker'
