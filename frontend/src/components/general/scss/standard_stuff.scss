@@ -1,0 +1,50 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+@mixin plain-link{
+	text-decoration: none;
+	color: $accent_blue_desaturated;
+}
+
+@mixin no-select{
+	-webkit-touch-callout: none; /* iOS Safari */
+		-webkit-user-select: none; /* Safari */
+		 -khtml-user-select: none; /* Konqueror HTML */
+			 -moz-user-select: none; /* Firefox */
+				-ms-user-select: none; /* Internet Explorer/Edge */
+						user-select: none; /* Non-prefixed version, currently
+																	supported by Chrome and Opera */
+}
+
+@mixin button-cursor{
+	cursor: pointer;
+}
+
+@mixin force-width ($n){
+	min-width: $n;
+	width: $n;
+	max-width: $n;
+}
+
+@mixin force-height ($n){
+	min-height: $n;
+	height: $n;
+	max-height: $n;
+}
+
+@mixin force-vertical-text-centering ($n){
+	@include force-height($n);
+	display: inline-block;
+	line-height: $n;
+	height: $n;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+@mixin scrollbar-overlay{
+	overflow: scroll;
+	overflow-x: hidden;
+	overflow-y: overlay;
+}

@@ -1,0 +1,13 @@
+.DS_Store
+node_modules
+public/bundle.*
+public/*.css
+public/*.js
+public/*.js.map
+public/*.svg
+public/*.txt
+public/build/
+package-lock.json
+yarn.lock
+yarn-error.log
+.routify

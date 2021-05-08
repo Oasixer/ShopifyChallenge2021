@@ -1,0 +1,7 @@
+.git/*
+.git/
+
+# dont copy in any existing binary
+main
+
+**/node_modules

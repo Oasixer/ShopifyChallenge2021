@@ -1,0 +1,55 @@
+@import '../general/scss/fonts.scss';
+@import '../general/scss/colours.scss';
+@import '../general/scss/standard_stuff.scss';
+div{
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	margin: 0;
+	padding: 0;
+}
+
+div#verify-page-main{
+  background: $bg_0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  div#verify-page-content{
+    display: flex;
+    height: 100%;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    *{
+      font-family: $poppins;
+      color: $text_0;
+      font-style: normal;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+      margin-bottom: 35px;
+    }
+    div#thanks{
+      font-weight: bold;
+    }
+    div#message{
+      font-weight: normal;
+    }
+
+    button#resend{
+      @include force-width(340px);
+      @include force-height(50px);
+      border-radius: 10px;
+      background-color: #511BC5;
+      font-family: $poppins;
+      font-weight: 500;
+      font-size: 18px;
+      border: none;
+      color: $text_0;
+      cursor: pointer;
+    }
+  }
+}

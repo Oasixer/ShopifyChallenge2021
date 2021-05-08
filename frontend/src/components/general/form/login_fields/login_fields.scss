@@ -1,0 +1,23 @@
+@import "../../scss/standard_stuff.scss";
+@import "../../scss/colours.scss";
+@import "../../scss/fonts.scss";
+div#labeledInputsBlock{
+	display: flex;
+	flex-flow: column nowrap;
+	padding: 0 50px 0 25px;
+	width: fit-content;
+}
+button#loginButton{
+	@include force-width(250px);
+	@include force-height(50px);
+	border-radius: 10px;
+	margin-left: auto;
+	background: rgba(98, 109, 203, 0.62);
+	font-family: $poppins;
+	font-weight: 500;
+	font-size: 18px;
+	margin-top: 30px;
+	border: none;
+	color: $text_0;
+	cursor: pointer;
+}

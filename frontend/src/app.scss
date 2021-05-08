@@ -1,0 +1,45 @@
+:global(body){
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	height: 100%;
+	overflow: scroll;
+	overflow-x: hidden;
+	overflow-y: overlay;
+}
+:global(*){
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+:global(html){
+	scroll-behavior: smooth;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+$scrollbar-width: 10px;
+$scrollbar-pad-horizontal: 8px;
+$scrollbar-pad-vertical: 0px;
+:global(::-webkit-scrollbar) {
+	width: $scrollbar-pad-horizontal+$scrollbar-width;
+	height: $scrollbar-width;
+}
+
+:global(::-webkit-scrollbar-thumb) {
+	background: rgba(130,130,130,0.5);
+	border-top: $scrollbar-pad-vertical transparent solid;
+	border-bottom: $scrollbar-pad-vertical transparent solid;
+	border-right: $scrollbar-pad-horizontal transparent solid;
+	background-clip: padding-box;
+}
+
+:global(::-webkit-scrollbar-track) {
+	background: transparent;
+	border-top: $scrollbar-pad-vertical transparent solid;
+	border-bottom: $scrollbar-pad-vertical transparent solid;
+	border-right: $scrollbar-pad-horizontal transparent solid;
+	background-clip: padding-box !important;
+}

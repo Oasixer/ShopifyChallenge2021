@@ -1,0 +1,48 @@
+@import './fonts.scss';
+@import './colours.scss';
+@import './standard_stuff.scss';
+
+@mixin text-input-main-page-font {
+	font-family: $poppins;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 25px;
+	line-height: 100px;
+	letter-spacing: -0.02em;
+	text-align: left;
+	color: rgba(0, 0, 0, 0.85);
+	text-decoration: none;
+}
+
+$mainpage-inputs-border-radius: 10px;
+$button-height: 50px;
+
+@mixin text-input-main-page {
+	@include text-input-main-page-font;
+	background-color: $text_0;
+	padding: 1em;
+	border-radius: $mainpage-inputs-border-radius;
+	min-height: 50px;
+	max-height: 50px;
+	width: 450px;
+	border: none;
+	outline: none;
+	height: $button-height;
+}
+
+@mixin register-button-font{
+	color: $accent_primary;
+}
+
+@mixin link-button{
+	@include text-input-main-page-font;
+	@include no-select;
+	border-radius: $mainpage-inputs-border-radius;
+	height: $button-height;
+	line-height: $button-height;
+	display: block;
+	padding: 0 55px;
+	margin: 0 0;
+	text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.35);
+	text-decoration: none;
+}

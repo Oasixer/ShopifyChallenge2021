@@ -1,0 +1,23 @@
+@import '../../scss/fonts.scss';
+@import '../../scss/colours.scss';
+@import '../../scss/standard_stuff.scss';
+
+div.toggle_list{
+	display: flex;
+	flex-flow: column nowrap;
+	div.labeled_toggle{
+		display: flex;
+		align-items: center;
+		padding: 10px 20px;
+		div.title{
+			@include force-vertical-text-centering(30px);
+			margin: 0 auto 0 0;
+			font-family: $poppins;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 17.8286px;
+			color: $text_0;
+			min-width: fit-content;
+		}
+	}
+}

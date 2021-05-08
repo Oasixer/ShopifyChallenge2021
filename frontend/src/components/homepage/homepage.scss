@@ -1,0 +1,90 @@
+@import '../general/scss/fonts.scss';
+@import '../general/scss/form.scss';
+*{
+	color: #FFFFFF;
+	text-align: center;
+}
+
+div{
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	margin: 0;
+	padding: 0;
+}
+
+div#landing-page-main{
+  background: linear-gradient(76.74deg, #1A0841 31.6%, rgba(88, 14, 123, 0.81) 107.51%);
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: stretch;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+	div#landing-page-content{
+		flex: 1 1 auto;
+		div#landing-page-horizontal-split{
+			flex-flow: row nowrap;
+			justify-content: space-around;
+			div#demo-animation-placeholder{
+				background-color: rgba(196, 196, 196, 0.44);
+				text-align: center;
+				color: black;
+				flex: 0 1 40%;
+			}
+			div#landing-page-text{
+				flex: 0 1 40%;
+				div#we-believe-in-you{
+					flex-flow: row nowrap;
+					margin: 50px 0;
+					div{
+						font-family: $poppins;
+						font-style: normal;
+						font-weight: bold;
+						line-height: 100px;
+						text-align: center;
+						letter-spacing: -0.02em;
+						flex: 0 0 auto;
+					}
+
+					div#we-believe-in{
+						color: #FFFFFF;
+						font-size: 68px;
+					}
+					div#you{
+						color: #BB2299;
+						font-size: 89px;
+						margin-left: 0.3em;
+					}
+				}
+				div#jk-text{
+					font-family: $poppins;
+					font-style: normal;
+					font-weight: 300;
+					font-size: 32px;
+					line-height: 51px;
+				}
+			}
+		}
+	}
+}
+
+div#register-bar{
+	display: flex;
+	flex-flow: row nowrap;
+	margin-top: 80px;
+	input{
+		@include text-input-main-page;
+		margin-right: 15px;
+	}
+	a#register-button{
+		display: block;
+		@include link-button;
+		background-color: $accent_primary;
+		color: $text_0;
+		&:hover{
+			background-color: darken($accent_primary, 3%);
+		}
+	}
+}

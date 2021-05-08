@@ -1,0 +1,142 @@
+@import '../../scss/colours.scss';
+@import '../../scss/standard_stuff.scss';
+$text-color: #fff;
+$select-background: $bg_2b;
+$select-width: 220px;
+$select-height: 40px;
+$option-height: 36px;
+$option-group-title-height: 22px;
+$border-radius: 5px;
+$select-font-size: 16px;
+$option-font-size: 16px;
+$option-group-font-size: 13px;
+$option-indent: 15px;
+$option-group-title-indent: 5px;
+
+$scrollbar-pad-vertical: 10px;
+*{
+	::-webkit-scrollbar-track {
+		background: rgba(15, 15, 15, 0.4);
+		border-top: $scrollbar-pad-vertical transparent solid;
+		border-bottom: $scrollbar-pad-vertical transparent solid;
+	}
+	::-webkit-scrollbar-thumb {
+		border-top: $scrollbar-pad-vertical transparent solid;
+		border-bottom: $scrollbar-pad-vertical transparent solid;
+	}
+	@include no-select;
+}
+
+select.select-hidden {
+	display: none;
+	visibility: hidden;
+	padding-right: 10px;
+}
+
+div.select{
+	font-size: $select-font-size;
+	color: $text-color;
+	margin: 15px 0;
+}
+
+div.select.dropdown {
+	display: inline-block;
+	position: relative;
+	height: $select-height;
+	cursor: pointer;
+}
+
+.select-styled {
+	position: absolute; 
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: $select-background;
+	padding: 8px 15px;
+	border-radius: $border-radius;
+	@include force-vertical-text-centering($select-height);
+	&:after {
+		content:"";
+		width: 0;
+		height: 0;
+		border: 7px solid transparent;
+		border-color: $text-color transparent transparent transparent;
+		position: absolute;
+		top: 16px;
+		right: 10px;
+	}
+	&:hover {
+		background-color: darken($select-background, 2);
+	}
+	&:active, &.active {
+		border-bottom-left-radius: 0 !important;
+		border-bottom-right-radius: 0 !important;
+		background-color: darken($select-background, 5);
+		&:after {
+			top: 9px;
+			border-color: transparent transparent $text-color transparent;
+		}
+	}
+}
+
+ul.select-options{
+	margin: 0 !important;
+	padding: 0;
+	list-style: none;
+	background-color: darken($select-background, 5);
+	max-height: $option-height * 5;
+	overflow: scroll;
+	overflow-x: hidden;
+	overflow-y: overlay;
+	display: flex;
+	flex-flow: column nowrap;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	li.option {
+		cursor: pointer;
+		margin: 0;
+		text-indent: $option-indent;
+		font-size: $option-font-size;
+		color: darken($text-color, 10);
+		@include force-height($option-height);
+		@include force-vertical-text-centering($option-height);
+		&:hover{
+			color: $text-color;
+			background: $accent_secondary;
+		}
+		&.selected{
+			color: $text-color;
+			background: $accent_secondary;
+		}
+	}
+	li.groupTitle{
+		color: darken($text-color, 30);
+		text-indent: $option-group-title-indent;
+		font-size: $option-group-font-size;
+		@include force-height($option-group-title-height);
+		@include force-vertical-text-centering($option-group-title-height);
+	}
+}
+
+ul.select-options.expanded{
+	border-radius: $border-radius;
+	background-color: $select-background;
+	padding: 15px 0;
+	li.option{
+		text-indent: $option-indent + 8px;
+	}
+	li.groupTitle{
+		text-indent: $option-group-title-indent + 8px;
+	}
+}
+
+ul.select-options.dropdown {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	left: 0;
+	z-index: 999;
+	border-top: 1px solid lighten($select-background, 10);
+	border-bottom-left-radius: $border-radius !important;
+	border-bottom-right-radius: $border-radius !important;
+}

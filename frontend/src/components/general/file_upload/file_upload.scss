@@ -1,0 +1,20 @@
+@import '../scss/colours.scss';
+@import '../scss/fonts.scss';
+div.file_upload{
+	padding: 40px;
+	background-color: $bg_3;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: flex-start;
+	width: fit-content;
+	border-radius: 20px;
+	h1{
+		font-family: $poppins;
+		color: $text_0;
+		font-style: normal;
+		font-weight: bold;
+		font-size: 28px;
+		letter-spacing: -0.02em;
+		text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.35);
+	}
+}

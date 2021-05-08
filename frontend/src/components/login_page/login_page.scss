@@ -1,0 +1,60 @@
+@import '../general/scss/fonts.scss';
+@import '../general/scss/form.scss';
+@import '../general/scss/colours.scss';
+
+div{
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+div#loginPageMain{
+  flex: 1 1 auto;
+	width: 100%;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	background-color: $bg_0;
+	h1#loginTitle{
+		@include bold-title-lighter;
+		color: $text_0;
+		margin-bottom: 20px;
+		text-align: center;
+	}
+	div#newHere{
+		// @include force-width(400px);
+		display: block;
+		margin-bottom: 4em;
+
+		*{
+			text-align: center;
+			overflow: hidden;
+			white-space: nowrap;
+			display: inline;
+			font-family: $poppins;
+			font-style: normal;
+			font-weight: 300;
+			font-size: 21px;
+		}
+		
+		div#newHereInner{
+			color: rgba(255, 255, 255, 0.7);
+		}
+		a{
+			margin: 0;
+			padding: 0;
+			@include plain-link;
+		}
+	}
+	div#loginMain{
+		display: flex;
+		flex-flow: column nowrap;
+		padding: 40px;
+		flex: 0 0 auto;
+		height: fit-content;
+		background-color: $bg_2;
+		border-radius: 14px;
+		align-items: center;
+	}
+}
+

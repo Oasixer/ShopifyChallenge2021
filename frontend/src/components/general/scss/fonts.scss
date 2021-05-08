@@ -1,0 +1,22 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans|Poppins:400italic,700italic,300,400,700);
+$open-sans: 'Open Sans', sans-serif;
+$poppins: 'Poppins', sans-serif;
+
+@mixin bold-title {
+	font-family: $poppins;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 68px;
+	line-height: 100px;
+	text-align: center;
+	letter-spacing: -0.02em;
+}
+
+
+@mixin bold-title-lighter {
+	font-family: $poppins;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 66px;
+	letter-spacing: 0.02em;
+}

@@ -1,0 +1,19 @@
+@import '../general/scss/colours.scss';
+@import '../general/scss/fonts.scss';
+
+div#resumeInputMain{
+	display: flex;
+	flex-flow: column nowrap;
+	background-color: $bg_0;
+	height: 100%;
+	align-items: stretch;
+	padding: 5%;
+	h1{
+		@include bold-title;
+		color: $text_0;
+		margin: 0.3em auto 15px 0;
+		width: fit-content;
+		text-align: left;
+		font-size: 40px;
+	}
+}

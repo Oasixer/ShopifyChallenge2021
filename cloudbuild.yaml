@@ -1,0 +1,58 @@
+steps:
+  - id: 'pull_latest_image'
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['pull', 'gcr.io/$PROJECT_ID/shopify2021_imghub:latest']
+
+  - id: 'build'
+    name: 'gcr.io/cloud-builders/docker'
+    args: [
+        'build',
+        '-t', 'gcr.io/$PROJECT_ID/shopify2021_imghub:$SHORT_SHA',
+        '-t', 'gcr.io/$PROJECT_ID/shopify2021_imghub:latest',
+        '--cache-from', 'gcr.io/$PROJECT_ID/shopify2021_imghub:latest',
+        '.',
+    ]
+  - id: 'push'
+    name: 'gcr.io/cloud-builders/docker'
+    args: [
+        'push',
+        'gcr.io/$PROJECT_ID/shopify2021_imghub:$SHORT_SHA'
+    ]
+
+  - id: 'push2'
+    name: 'gcr.io/cloud-builders/docker'
+    args: [
+        'push',
+        'gcr.io/$PROJECT_ID/shopify2021_imghub:latest'
+    ]
+
+  # TODO replace
+  # - id: "test"
+    # name: "gcr.io/cloud-builders/docker"
+    # args: [
+        # "run",
+        # '-e', 'PYTHONDONTWRITEBYTECODE=True',
+        # '-e', 'PYTHONUNBUFFERED=True',
+        # '-e', 'SECRET_MANAGER_NAME=${_SECRET_MANAGER_NAME}',
+        # '--network=cloudbuild',
+        # '--entrypoint=bash',
+        # 'gcr.io/$PROJECT_ID/shopify2021_imghub:$SHORT_SHA',
+        # '-c',
+        # 'install something; run something # TODO ',
+    # ]
+
+  - id: 'deploy'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: gcloud
+    args: [
+        'beta', 'run', 'deploy', 'shopify2021_imghub',
+        '--image', 'gcr.io/$PROJECT_ID/shopify2021_imghub:latest',
+        '--region', 'us-east1',
+        '--platform', 'managed',
+        '--timeout', '60m',
+    ]
+
+images: [
+  'gcr.io/$PROJECT_ID/shopify2021_imghub:$SHORT_SHA',
+  'gcr.io/$PROJECT_ID/shopify2021_imghub:latest'
+]

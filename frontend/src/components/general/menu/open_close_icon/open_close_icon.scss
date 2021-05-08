@@ -1,0 +1,14 @@
+div#iconContainer{
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 0;
+	overflow: visible;
+	svg{
+		overflow: visible;
+		&.closed{
+			transform:translateX(100%);
+		}
+		z-index: 10;
+	}
+}
