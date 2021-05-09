@@ -1,0 +1,29 @@
+@import '../../general/scss/fonts.scss';
+@import '../../general/scss/standard_stuff.scss';
+@import '../../general/scss/colours.scss';
+div.uploadPopup{
+	display: flex;
+	flex-flow: column nowrap;
+	height: 330px;
+	div.dropImage{
+		font-family: Poppins;
+		font-style: normal;
+		font-weight: 500;
+		font-size: 21px;
+		text-align: center;
+		border: 2px dashed rgba(255, 255, 255, 0.47);
+		flex: 1 0 auto;
+		margin: 85 75;
+		color: white;
+		@include force-vertical-text-centering(80px);
+	}
+	div.icon-wrapper{
+		@include force-vertical-text-centering(100px);
+		background-color: #404345;
+		color: white;
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: center;
+		width: fit-content;
+	}
+}

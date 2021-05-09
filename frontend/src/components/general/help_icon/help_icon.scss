@@ -1,0 +1,17 @@
+@import '../scss/fonts.scss';
+@import '../scss/colours.scss';
+@import '../scss/standard_stuff.scss';
+
+div.helpIcon{
+	@include no-select;
+	@include force-width(22px);
+	@include force-vertical-text-centering(30px);
+	color: darken($text_0, 20);
+	font-family: $poppins
+	font-style: normal;
+	font-weight: bold;
+	font-size: 40px;
+	&:hover{
+		color: $text_0;
+	}
+}

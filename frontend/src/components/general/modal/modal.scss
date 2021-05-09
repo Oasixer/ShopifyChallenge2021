@@ -90,14 +90,14 @@
 	left: 0.25rem;
 }
 
-.close:hover {
-	background: $accent_primary;
-}
+// .close:hover {
+	// // background: $accent_primary;
+// }
 
-.close:hover:before, .close:hover:after {
-	height: 2px;
-	background: white;
-}
+// .close:hover:before, .close:hover:after {
+	// height: 2px;
+	// background: white;
+// }
 
 .close:active {
 	transform: scale(0.9);
