@@ -6,5 +6,5 @@ type Mutation {
   ): User!
   signIn(email: String!, password: String!): String
   changePassword(password: String!): User!
-  saveFile(name: String!, uuid: String!, tags: String!): File!
+  saveFile(name: String!, url: String!, uuid: String!, tags: String!): File!
 }

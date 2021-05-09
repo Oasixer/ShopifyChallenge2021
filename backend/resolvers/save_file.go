@@ -25,7 +25,7 @@ func (r *Resolvers) SaveFile(ctx context.Context, args saveFileArgs) (*FileRespo
 	
 	userID_ := userID.(uint)
 
-	newFile := model.File{Name: args.Name, Uuid: args.UUID, UserID: userID_, Tags: args.Tags}
+	newFile := model.File{Name: args.Name, Uuid: args.UUID, UserID: userID_, Tags: args.Tags, Url: args.Url}
 	result := r.DB.Create(&newFile)
 	if result.Error != nil {
 		return nil, &fileCreationError{Code: "DBErr", Message: "Database had an error"}
@@ -37,6 +37,7 @@ type saveFileArgs struct {
 	UUID uuid.UUID
 	Name string
 	Tags string
+	Url string
 }
 
 // file exists error

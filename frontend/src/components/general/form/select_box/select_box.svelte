@@ -6,7 +6,7 @@
 	// [{'id':'item1', 'title': 'Item 1'}, ...]
 	// -----GROUPED:
 	// [{'id':'group1', 'title': 'Group 1', 'items': [{'id':'item1', 'title': 'Item 1'}]}, ...]
-	export let label; // ie. 'select resume'
+	export let label;
 	export let selected; // selected item id (binding)
 	export let expanded = false;
 

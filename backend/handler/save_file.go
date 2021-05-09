@@ -17,7 +17,7 @@ import (
 
 const (
 	projectID  = "triple-skein-312919" // TODO move these to config
-	bucketName = "file-storage-shopify-1"
+	bucketName = "shopify_imghub"
 )
 
 type ClientUploader struct {
@@ -42,12 +42,13 @@ func init() {
 		cl:         client,
 		bucketName: bucketName,
 		projectID:  projectID,
-		uploadPath: "shopify/",
+		uploadPath: "imageFiles/",
 	}
 
 }
 
 func SaveFile(c *gin.Context) {
+	log.Print("hi wtf")
 	f, err := c.FormFile("file_input")
 
 	if err != nil {
@@ -73,9 +74,11 @@ func SaveFile(c *gin.Context) {
 		})
 		return
 	}
-	// TODO do mutation here
-	c.JSON(http.StatusOK, gin.H{
+	log.Print("uploaded file succesfully")
+	c.JSON(201, gin.H{
 		"message": "success",
+		"uuid": fileUUID.String(),
+		"url": "temp_blah_TODO",
 	})
 }
 
