@@ -4,7 +4,7 @@
 div.uploadPopup{
 	display: flex;
 	flex-flow: column nowrap;
-	height: 330px;
+	align-items: stretch;
 	div.dropImage{
 		font-family: Poppins;
 		font-style: normal;
@@ -13,17 +13,27 @@ div.uploadPopup{
 		text-align: center;
 		border: 2px dashed rgba(255, 255, 255, 0.47);
 		flex: 1 0 auto;
-		margin: 85 75;
+		margin: 85px 75px;
 		color: white;
 		@include force-vertical-text-centering(80px);
 	}
 	div.icon-wrapper{
 		@include force-vertical-text-centering(100px);
+		@include no-select;
 		background-color: #404345;
 		color: white;
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: center;
-		width: fit-content;
+		align-items: center;
+		flex: 1 1 auto;
+		margin: 0px;
+		border-bottom-left-radius: 9px;
+		border-bottom-right-radius: 9px;
+		font-family: $poppins;
+		font-style: normal;
+		font-weight: 500;
+		font-size: 21px;
+		cursor: pointer;
 	}
 }

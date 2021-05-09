@@ -6,19 +6,27 @@
 		open(UploadPopup,
 			{},
 			{
-			styleWindowWrap: {
-				margin: '0'
-			},
-			styleWindow: {
-				border: '0',
-				background: 'linear-gradient(80.44deg, #1A0841 11.94%, #580E7B 86.56%)'
-			},
-			styleContent: {
-			},
-			styleCloseButton: {
-					position: 'relative',
-					top: '-20px'
-			},
+				styleWindowWrap: {
+					margin: '0'
+				},
+				styleWindow: {
+					border: '0',
+					background: 'linear-gradient(80.44deg, #1A0841 11.94%, #580E7B 86.56%)',
+					borderRadius: '9px',
+					borderBottomRightRadius: '20px',
+					borderBottomLeftRadius: '20px'
+				},
+				styleContent: {
+					overflow: 'hidden',
+					padding: '0'
+				},
+				styleCloseButton: {
+						top: '-10px',
+						right: '-10px',
+						border: 'none',
+						cursor: 'pointer',
+						boxShadow: 'none'
+				},
 		});
 	}
 </script>
