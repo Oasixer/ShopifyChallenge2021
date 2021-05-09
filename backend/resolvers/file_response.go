@@ -22,16 +22,12 @@ func (r *FileResponse) Url() string {
 	return r.f.Url
 }
 
-func (r *FileResponse) FileType() string {
-	return r.f.FileType
-}
-
-func (r *FileResponse) DocumentType() string {
-	return r.f.DocumentType
-}
-
 func (r *FileResponse) Name() string {
 	return r.f.Name
+}
+
+func (r *FileResponse) Tags() string {
+	return r.f.Tags
 }
 
 func (r *FileResponse) CreatedAt() string {

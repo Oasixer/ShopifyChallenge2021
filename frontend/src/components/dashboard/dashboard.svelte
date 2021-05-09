@@ -5,7 +5,9 @@
     query {
 			getUser {
 				files {
-					documentType
+					name
+					tags
+					url
 				}
 			}
 		}

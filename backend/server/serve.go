@@ -59,6 +59,8 @@ func Serve(db *db.DB) {
 		})
 	}
 
+	api.POST("/upload-file", handler.SaveFile)
+
 	// serve and run
 	log.Fatal(router.Run(":" + config.CONFIG.Port))
 }

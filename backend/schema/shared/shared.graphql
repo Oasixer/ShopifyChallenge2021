@@ -10,9 +10,8 @@ type User {
 type File {
   id: ID!
   url: String!
-  fileType: String!
-  documentType: String!
   name: String!
   createdAt: String!
   updatedAt: String!
+  tags: String!
 }
