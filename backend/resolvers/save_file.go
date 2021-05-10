@@ -5,14 +5,15 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+
 	"github.com/Oasixer/ShopifyChallenge2021/handler"
 	"github.com/Oasixer/ShopifyChallenge2021/model"
 	"github.com/google/uuid"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 // SaveFile mutation to create file
-func (r *Resolvers) SaveFile(ctx context.Context, args saveFileArgs) (*FileResponse, error){
+func (r *Resolvers) SaveFile(ctx context.Context, args saveFileArgs) (*FileResponse, error) {
 	log.Print("saving file")
 	userID := ctx.Value(handler.ContextKey("userID"))
 	if userID == nil {
@@ -26,26 +27,28 @@ func (r *Resolvers) SaveFile(ctx context.Context, args saveFileArgs) (*FileRespo
 
 	uuid_ := uuid.MustParse(args.Uuid)
 
-	if !r.DB.Where("Uuid = ?", uuid_).First(&model.File{}).RecordNotFound() {
-		return nil, &fileCreationError{Code:"FileExists", Message: "File already exists within DB"}
-	}
-	log.Print("FUCK_2")
-	
+	// if !r.DB.Where("Uuid = ?", uuid_).First(&model.File{}).RecordNotFound() {
+	// return nil, &fileCreationError{Code:"FileExists", Message: "File already exists within DB"}
+	// }
+	// log.Print("FUCK_2")
 
-	userID64, _ := strconv.ParseUint(userID.(string), 10, 32);
+	userID64, _ := strconv.ParseUint(userID.(string), 10, 32)
 
 	newFile := model.File{Name: args.Name, Uuid: uuid_, UserID: uint(userID64), Tags: args.Tags}
+	r.DB.Model(&user).Association("Files").Append(&newFile);
 	log.Print("FUCK_3")
 	result := r.DB.Create(&newFile)
 	if result.Error != nil {
 		return nil, &fileCreationError{Code: "DBErr", Message: "Database had an error"}
 	}
-	// user.Files = append(user.Files, newFile)
-	log.Print(result.RowsAffected)
-	// r.DB.Save(&newFile)
+	result = r.DB.Save(&newFile)
+	result = r.DB.Save(&user)
 
 	r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(&user)
-	log.Printf("User files[0]:%s",user.Files[0].Name)
+
+	// r.DB.S
+	// r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(&user)
+	// log.Printf("User files[0]:%s",user.Files[0].Name)
 	return &FileResponse{f: &newFile}, nil
 }
 
@@ -70,4 +73,4 @@ func (e fileCreationError) Extensions() map[string]interface{} {
 		"code":    e.Code,
 		"message": e.Message,
 	}
-} 
+}

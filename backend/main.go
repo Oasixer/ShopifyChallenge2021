@@ -35,7 +35,7 @@ func main() {
 		panic(err)
 	}
 
-	defer db.Close()
+	// defer db.Close()
 
 	if *cmdResults.Nuke {
 		migrations.Nuke(db)

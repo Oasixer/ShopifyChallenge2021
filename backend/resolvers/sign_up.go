@@ -21,9 +21,9 @@ func (r *Resolvers) SignUp(args signUpMutationArgs) (*UserResponse, error) {
 	newUser := model.User{Email: args.Email, Password: hashPassword, Username: args.Username}
 
 	// if user already exists return an error of UserExists
-	if !r.DB.Where("email = ?", args.Email).First(&model.User{}).RecordNotFound() {
-		return nil, &signUpError{Code: "UserExists", Message: "User already signed up"}
-	}
+	// if !r.DB.Where("email = ?", args.Email).First(&model.User{}).RecordNotFound() {
+		// return nil, &signUpError{Code: "UserExists", Message: "User already signed up"}
+	// }
 
 	result := r.DB.Create(&newUser)
 	if result.Error != nil {

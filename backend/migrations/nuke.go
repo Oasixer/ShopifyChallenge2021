@@ -7,6 +7,6 @@ import (
 
 // delete the tables
 func Nuke(db *db.DB) {
-	db.DropTableIfExists(&model.User{})
-	db.DropTableIfExists(&model.File{})
+	db.Migrator().DropTable(&model.User{})
+	db.Migrator().DropTable(&model.File{})
 }

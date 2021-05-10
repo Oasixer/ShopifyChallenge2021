@@ -5,11 +5,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/jinzhu/gorm"
+  "gorm.io/driver/postgres"
+  "gorm.io/gorm"
 
 	"github.com/Oasixer/ShopifyChallenge2021/config"
-	// gorm postgres dialect
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 // DB *grom.DB
@@ -30,7 +29,7 @@ func ConnectDB() (*DB, error) {
 	)
 
 	// connect to db
-	db, err := gorm.Open("postgres", dboptions)
+	db, err := gorm.Open(postgres.Open(dboptions),&gorm.Config{})
 
 	if err != nil {
 		log.Fatalf("Couldnt connect to db: %s", err)
