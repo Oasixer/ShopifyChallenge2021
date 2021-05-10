@@ -4,7 +4,7 @@
 button{
 	@include force-width(150px);
 	@include force-vertical-text-centering(48px);
-	background-color: #45CC93;
+	background-color: $accent_secondary;
 	font-family: $poppins;
 	font-style: normal;
 	font-weight: bold;

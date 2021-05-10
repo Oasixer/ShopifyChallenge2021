@@ -1,0 +1,80 @@
+@import '../general/scss/standard_stuff.scss';
+@import '../general/scss/fonts.scss';
+@import '../general/scss/colours.scss';
+$tagMargin: 5px;
+div.tagCreateMain{
+	display: flex;
+	flex-flow: column nowrap;
+	background-color: #787477;
+	border: none;
+	border-radius: 10px;
+	padding: 7px;
+	width: 100%;
+	min-width: 100%;
+	align-items: stretch;
+	overflow-x: hidden;
+	div.tagBar{
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: flex-start;
+		margin: $tagMargin -$tagMargin/2;
+	}
+	div.line{
+		padding: 0;
+		@include force-height(1px);
+		background-color: $bg_0;
+		@include force-width(100vw);
+		margin: $tagMargin 0-2*$tagMargin;
+	}
+}
+
+span{
+	margin: 0;
+	padding: 0;
+}
+input.tag{
+	margin: 0 $tagMargin;
+}
+.tag{
+	background-color: transparent;
+	border: none;
+	outline: none;
+	@include force-height(40px);
+	color: $text_0;
+	font: $poppins;
+	color: $text_0;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 16px;
+	@include force-vertical-text-centering(40px);
+}
+div.tagContainer{
+	@include force-height(40px);
+	width: fit-content;
+	margin: 0;
+	padding: 0 15px;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	margin: 0 $tagMargin;
+	background-color: $accent_secondary;
+	border-radius: 5px;
+	*{
+		@include no-select;
+	}
+	&:hover{
+		cursor: pointer;
+		background-color: darken($accent_secondary, 7);
+	}
+	span.matched{
+		text-decoration: underline;
+	}
+	span.unmatched{
+		text-decoration: none;
+	}
+	span.solo{
+		min-width: 30px;
+		margin-right: 10px;
+	}
+}

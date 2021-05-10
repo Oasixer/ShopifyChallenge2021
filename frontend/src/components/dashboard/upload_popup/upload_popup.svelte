@@ -1,9 +1,12 @@
 <script>
 	import Icon from 'svelte-icon';
-	import { mutation } from '@urql/svelte';
+	import { fileUpload } from '../../../store/file.js';
 	import imageIcon from '../../../../public/assets/icons/image.svg';
 	let fileInput;
 
+	fileUpload.set('');
+
+	// import { mutation } from '@urql/svelte';
 	// const confirmFileMutation = mutation({
 			// query: `
 			// mutation($name: String!, $email: String!){
@@ -23,19 +26,22 @@
 			body: formData
 			});
 		// console.log(`Success: ${result.json()}`);
-		return result.json()
+		return result.json();
 	}
 	const handleFile = () => {
-	// uploadFile().then(result => {
-		// confirmFile(result);
-	// })
+		uploadFile().then(result => {
+			result.fileExt = fileInput.files[0].name.split('.').pop();
+			console.log(`got upload result: ${JSON.stringify(result)}`);
+			fileUpload.set(JSON.stringify(result));
+			window.open('/new', '_self');
+		});
 	}
 </script>
 <style src='upload_popup.scss'>
 </style>
-<div class=uploadPopup>
-	<input type='file' bind:this={fileInput} style='visibility: hidden; height: 0; width: 0;'
+<input type='file' bind:this={fileInput} style='visibility: hidden; height: 0; width: 0;'
 	 on:change={handleFile} accept=".jpg, .jpeg, .png">
+<div class=uploadPopup>
 	<div class='dropImage'>
 		Drop image here
 	</div>

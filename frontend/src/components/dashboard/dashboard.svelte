@@ -7,7 +7,7 @@
 				files {
 					name
 					tags
-					url
+					uuid
 				}
 			}
 		}

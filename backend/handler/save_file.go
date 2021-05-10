@@ -44,7 +44,6 @@ func init() {
 		projectID:  projectID,
 		uploadPath: "imageFiles/",
 	}
-
 }
 
 func SaveFile(c *gin.Context) {
@@ -78,7 +77,6 @@ func SaveFile(c *gin.Context) {
 	c.JSON(201, gin.H{
 		"message": "success",
 		"uuid": fileUUID.String(),
-		"url": "temp_blah_TODO",
 	})
 }
 

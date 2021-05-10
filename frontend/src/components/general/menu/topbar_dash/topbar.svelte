@@ -1,4 +1,5 @@
 <script>
+	export let showUpload = true;
 	import ImgHubLogo from '../../logo/logo.svelte'
 	import UploadButton from '../../../dashboard/upload_button/upload_button.svelte';
 </script>
@@ -12,7 +13,9 @@
 			<a id='logotopleft' href='/' target='_self' class='topbar-button'>
 				<ImgHubLogo/>
 			</a>
-			<UploadButton/>
+			{#if showUpload}
+				<UploadButton/>
+			{/if}
 		</div>
 
 		<div class='topbar-group'>

@@ -60,7 +60,7 @@ func Serve(db *db.DB) {
 	}
 
 	api.POST("/upload-file", handler.SaveFile)
-
+	api.GET("/download-file", handler.GetFile)
 	// serve and run
 	log.Fatal(router.Run(":" + config.CONFIG.Port))
 }

@@ -18,12 +18,12 @@ func (r *FileResponse) ID() graphql.ID {
 	return graphql.ID(id)
 }
 
-func (r *FileResponse) Url() string {
-	return r.f.Url
-}
-
 func (r *FileResponse) Name() string {
 	return r.f.Name
+}
+
+func (r *FileResponse) Uuid() string {
+	return r.f.Uuid.String()
 }
 
 func (r *FileResponse) Tags() string {

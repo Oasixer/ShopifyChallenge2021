@@ -7,7 +7,6 @@ import (
 // File : Model with injected fields `ID`, `CreatedAt`, `UpdatedAt`
 type File struct {
 	Model
-	Url string `gorm:"type:varchar(160);not null"`
 
 	Name string `gorm:"not null;`
 	
