@@ -1,18 +1,17 @@
 package handler
 
 import (
-	"github.com/Oasixer/ShopifyChallenge2021/config"
-	"cloud.google.com/go/storage"
 	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"io"
 	"log"
 	"mime/multipart"
 	"net/http"
-	"os"
 	"time"
+
+	"cloud.google.com/go/storage"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 const (
@@ -73,7 +72,7 @@ func SaveFile(c *gin.Context) {
 	log.Print("uploaded file succesfully")
 	c.JSON(201, gin.H{
 		"message": "success",
-		"uuid": fileUUID.String(),
+		"uuid":    fileUUID.String(),
 	})
 }
 
@@ -94,4 +93,4 @@ func (c *ClientUploader) UploadFile(file multipart.File, object string) error {
 	}
 
 	return nil
-} 
+}
