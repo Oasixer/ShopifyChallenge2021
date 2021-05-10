@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
-	"github.com/Oasixer/ShopifyChallenge2021/config"
+	// "github.com/Oasixer/ShopifyChallenge2021/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,9 +28,9 @@ type ClientDownloader struct {
 var downloader *ClientDownloader
 
 func init() {
-	if config.CONFIG.Mode != "prod" {
-		os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/home/k/Downloads/triple-skein-312919-cee9b170f894.json") // temp
-	}
+	// if config.CONFIG.Mode != "prod" {
+		// os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/home/k/Downloads/triple-skein-312919-cee9b170f894.json") // temp
+	// }
 	client, err := storage.NewClient(context.Background())
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
