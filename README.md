@@ -3,9 +3,9 @@ Unfortunately, I let the scope of this project creep too wide to wrap it up in a
 https://shopify2021-57nddaoela-ue.a.run.app
 
 Feature completion
-- [ ] add db image with docker-compose so that shopify team can run the app w/o needing to create local postgres instance
 - [x] user registration (backend + frontend)
 - [x] user login (backend + frontend)
+- [x] graphql integration (frontend + backend)
 - [x] password storage, hashing
 - [x] file upload page
 - [x] upload file to gcp bucket
@@ -15,6 +15,7 @@ Feature completion
 
 - [x] basic unit tests
 - [ ] integration tests, and decent unit test coverage
+- [ ] add docker-compose including an image for a local db so that shopify team can run the app w/o needing to create local postgres instance
 
 ## Run app locally
 * TODO: Once docker-compose is working for local development / testing, put command here

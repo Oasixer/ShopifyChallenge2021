@@ -30,9 +30,6 @@ type ClientUploader struct {
 var uploader *ClientUploader
 
 func init() {
-	if config.CONFIG.Mode != "prod"{
-		os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/home/k/Downloads/triple-skein-312919-cee9b170f894.json") // temp
-	}
 	client, err := storage.NewClient(context.Background())
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
