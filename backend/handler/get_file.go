@@ -9,11 +9,11 @@ import (
 	"log"
 	// "mime/multipart"
 	"net/http"
-	// "os"
+	"os"
 	"time"
 
 	"cloud.google.com/go/storage"
-	// "github.com/Oasixer/ShopifyChallenge2021/config"
+	"github.com/Oasixer/ShopifyChallenge2021/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,9 +28,15 @@ type ClientDownloader struct {
 var downloader *ClientDownloader
 
 func init() {
-	// if config.CONFIG.Mode != "prod" {
-		// os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/home/k/Downloads/triple-skein-312919-cee9b170f894.json") // temp
-	// }
+	log.Printf("init handler %s", config.CONFIG.Mode)
+	if config.CONFIG.Mode == "test" || config.CONFIG.Mode == "" {
+		log.Printf("tripped", config.CONFIG.Mode)
+		return
+	}
+	log.Printf("DONT WANNA SEE THIS", config.CONFIG.Mode)
+	if config.CONFIG.Mode == "dev" {
+		os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/home/k/Downloads/triple-skein-312919-cee9b170f894.json") // temp
+	}
 	client, err := storage.NewClient(context.Background())
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
@@ -45,7 +51,6 @@ func init() {
 		downloadPath: "imageFiles/",
 		w: buf,
 	}
-
 }
 
 func GetFile(c *gin.Context) {

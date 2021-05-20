@@ -1,8 +1,10 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
+	// "strings"
 
 	"github.com/hashicorp/hcl/v2/hclsimple"
 )
@@ -26,10 +28,15 @@ type DBConfig struct {
 // a global variable to be able to access anywhere
 var CONFIG Config
 
+func init() {
+	Load()
+}
+
 // mustGetEnv is a helper function for getting environment variables.
 // Displays a warning if the environment variable is not set.
 func mustGetenv(k string) string {
 	v := os.Getenv(k)
+
 	if v == "" {
 		log.Fatalf("Warning: %s environment variable not set.\n", k)
 	}
@@ -54,7 +61,21 @@ func Load() {
 			DB:   DBCONFIG,
 		}
 	} else {
-		err := hclsimple.DecodeFile("../config/config.hcl", nil, &CONFIG)
+		configPath := ""
+		fmt.Println(os.Getenv("TESTING"))
+		if os.Getenv("TESTING") == "true" {
+			log.Print("MADE IT INTO TESTING")
+			dir, err2 := os.Getwd()
+			if err2 != nil {
+				log.Fatal(err2)
+			}
+			fmt.Println(dir)
+			configPath = "../../config/config_test.hcl"
+		}else{
+				configPath = "../config/config.hcl"
+		}
+	
+		err := hclsimple.DecodeFile(configPath, nil, &CONFIG)
 		if err != nil {
 			log.Fatalf("Failed to load config: %s", err)
 		}

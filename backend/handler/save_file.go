@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"os"
 	"log"
 	"mime/multipart"
 	"net/http"
 	"time"
+	"github.com/Oasixer/ShopifyChallenge2021/config"
 
 	"cloud.google.com/go/storage"
 	"github.com/gin-gonic/gin"
@@ -29,6 +31,15 @@ type ClientUploader struct {
 var uploader *ClientUploader
 
 func init() {
+	log.Printf("init handler %s", config.CONFIG.Mode)
+	if config.CONFIG.Mode == "test" || config.CONFIG.Mode == "" {
+		log.Printf("tripped", config.CONFIG.Mode)
+		return
+	}
+	log.Printf("DONT WANNA SEE THIS", config.CONFIG.Mode)
+	if config.CONFIG.Mode == "dev" {
+		os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/home/k/Downloads/triple-skein-312919-cee9b170f894.json") // temp
+	}
 	client, err := storage.NewClient(context.Background())
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)

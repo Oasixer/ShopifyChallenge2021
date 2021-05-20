@@ -1,9 +1,8 @@
 // Mode: The mode that the server runs in
 // can be prod, dev, or test
-Mode = "dev"
+Mode = "test"
 
 // Port: The port it runs on
-// this only matters in dev
 Port = "3000"
 
 // DB: the block to hold all database values
@@ -12,6 +11,6 @@ DB {
     Port="5432"
     User="postgres"
     Password="postgres"
-    DBName="shopify"
+    DBName="shopify_test"
     SSLMode="disable"
 }

@@ -1,0 +1,82 @@
+package integration_tests
+
+import (
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"log"
+	"testing"
+	"github.com/Oasixer/ShopifyChallenge2021/migrations"
+
+	"github.com/gin-gonic/gin"
+	"github.com/Oasixer/ShopifyChallenge2021/model"
+	"github.com/Oasixer/ShopifyChallenge2021/config"
+	"github.com/Oasixer/ShopifyChallenge2021/db"
+	"github.com/Oasixer/ShopifyChallenge2021/server"
+)
+
+var tmpUserList []model.User
+
+var r *gin.Engine
+
+// This function is used to do setup before executing the test functions
+func TestMain(m *testing.M) {
+	gin.SetMode(gin.TestMode)
+
+	config.Load()
+	db, err := db.ConnectDB()
+	if err != nil {
+		panic(err)
+	}
+	log.Print("migrating")
+	migrations.Nuke(db)
+	migrations.Migrate(db)
+	log.Print("migrated")
+	r = server.SetupRouter(db)
+	os.Exit(m.Run())
+}
+
+// Helper function to create a router during testing
+func getRouter() *gin.Engine {
+	// r := gin.Default()
+	return r
+}
+
+// Helper function to process a request and test its response
+func testHTTPResponse(t *testing.T, r *gin.Engine, req *http.Request, f func(w *httptest.ResponseRecorder) bool) {
+
+	// Create a response recorder
+	w := httptest.NewRecorder()
+
+	// Create the service and process the above request.
+	r.ServeHTTP(w, req)
+
+	if !f(w) {
+		t.Fail()
+	}
+}
+
+// This is a helper function that allows us to reuse some code in the above
+// test methods
+func testMiddlewareRequest(t *testing.T, r *gin.Engine, expectedHTTPCode int) {
+	// Create a request to send to the above route
+	req, _ := http.NewRequest("GET", "/", nil)
+
+	log.Print("middleware test")
+	// Process the request and test the response
+	testHTTPResponse(t, r, req, func(w *httptest.ResponseRecorder) bool {
+		return w.Code == expectedHTTPCode
+	})
+}
+
+// This function is used to store the main lists into the temporary one
+// for testing
+func saveLists() {
+	// tmpUserList = userList
+}
+
+// This function is used to restore the main lists from the temporary one
+func restoreLists() {
+	// userList = tmpUserList
+	// articleList = tmpArticleList
+}

@@ -16,7 +16,7 @@ func main() {
 	cmdResults := cmd.Execute()
 
 	// load the config
-	config.Load()
+	// config.Load()
 
 	// if the config is dev mode set server to dev mode
 	// same with other modes
@@ -34,8 +34,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	// defer db.Close()
 
 	if *cmdResults.Nuke {
 		migrations.Nuke(db)

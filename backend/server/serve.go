@@ -18,12 +18,16 @@ import (
 	"github.com/Oasixer/ShopifyChallenge2021/schema"
 )
 
-func Serve(db *db.DB) {
-	context.Background()
+type query struct{}
 
+func (_ *query) Hello() string { return "Hello, world!" }
+
+func SetupRouter(db *db.DB) *gin.Engine{
 	opts := []graphql.SchemaOpt{graphql.UseFieldResolvers()}
+	schema_ptr := schema.NewSchema()
+	s := graphql.MustParseSchema(*schema_ptr, &resolvers.Resolvers{DB: db}, opts...)
 
-	schema := graphql.MustParseSchema(*schema.NewSchema(), &resolvers.Resolvers{DB: db}, opts...)
+	context.Background()
 
 	// Set the router as the default one shipped with Gin
 	router := gin.Default()
@@ -47,7 +51,7 @@ func Serve(db *db.DB) {
 	if gin.Mode() == gin.DebugMode {
 		router.GET("/graphql", gin.WrapH(handler.GraphiQL{}))
 	}
-	router.POST("/graphql", gin.WrapH(handler.Authenticate(&handler.GraphQL{Schema: schema})))
+	router.POST("/graphql", gin.WrapH(handler.Authenticate(&handler.GraphQL{Schema: s})))
 
 	// Setup route group for the API
 	api := router.Group("/api")
@@ -62,5 +66,11 @@ func Serve(db *db.DB) {
 	api.POST("/upload-file", handler.SaveFile)
 	api.GET("/download-file", handler.GetFile)
 	// serve and run
+
+	return router
+}
+
+func Serve(db *db.DB) {
+	router := SetupRouter(db)
 	log.Fatal(router.Run(":" + config.CONFIG.Port))
 }

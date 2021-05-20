@@ -5,7 +5,7 @@ import (
 )
 
 func TestValidateJWT(t *testing.T) {
-	tokenString := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDE5LTA0LTIyVDIyOjQ3OjAxLjA1NTU5MSswOTowMCIsInVzZXJJRCI6IjEifQ.3dOqg_ceqv25nCl2C2WL_lye6vLC5dE8nplk184-5lQ"
+	tokenString := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDIxLTA1LTI4VDE2OjUyOjIyLjk4MDI4My0wNDowMCIsInVzZXJJRCI6IjEifQ.upDKJ-4Mp9Bg-OyTJ5VuntcijY3A-8POZr5Uh1mRZmI"
 	userID, err := ValidateJWT(&tokenString)
 	if err != nil {
 		t.Error(err)

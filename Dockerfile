@@ -21,11 +21,13 @@ RUN yarn build
 
 # Put everything in a smol container
 FROM alpine:latest
+RUN apk add --no-cache bash
 RUN apk --no-cache add ca-certificates
 COPY --from=go_builder /backend/main /backend/main
 COPY --from=go_builder /backend/schema /backend/schema
 COPY --from=node_builder /public /frontend/public
 ADD /boot.sh .
+ADD /test.sh .
 
 EXPOSE 80
 EXPOSE 443

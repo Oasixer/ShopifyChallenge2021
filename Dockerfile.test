@@ -1,0 +1,19 @@
+FROM golang:1.16.3-alpine AS go_builder
+
+ADD config/config_test_docker.hcl /config/config_test.hcl
+
+WORKDIR /backend
+
+# Download 3rd party libs
+ADD backend/go.mod .
+ADD backend/go.sum .
+RUN go mod download -x
+
+# Add the sources
+ADD ./backend/. .
+
+ADD /test.sh /
+RUN chmod 755 /test.sh
+ENV TESTING true
+CMD "/test.sh"
+#CMD ["ls", "/"]
