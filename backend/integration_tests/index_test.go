@@ -1,20 +1,13 @@
 package integration_tests
 
 import (
-	// "io/ioutil"
 	"net/http"
 	"net/http/httptest"
-
-	// "net/url"
-	// "strconv"
-	// "strings"
-	"log"
 	"testing"
 )
 
 // Test that a GET request to / succeeds
 func TestIndex(t *testing.T) {
-	log.Print("PLEASE RUN THIS INDEX_TEST")
 	// Create a response recorder
 	w := httptest.NewRecorder()
 
