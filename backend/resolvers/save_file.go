@@ -37,14 +37,14 @@ func (r *Resolvers) SaveFile(ctx context.Context, args saveFileArgs) (*FileRespo
 	newFile := model.File{Name: args.Name, Uuid: uuid_, UserID: uint(userID64), Tags: args.Tags}
 	r.DB.Model(&user).Association("Files").Append(&newFile);
 	log.Print("FUCK_3")
-	result := r.DB.Create(&newFile)
-	if result.Error != nil {
-		return nil, &fileCreationError{Code: "DBErr", Message: "Database had an error"}
-	}
-	result = r.DB.Save(&newFile)
+	// result := r.DB.Create(&newFile)
+	result := r.DB.Save(&newFile)
 	result = r.DB.Save(&user)
 
 	r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(&user)
+	if result.Error != nil {
+		return nil, &fileCreationError{Code: "DBErr", Message: "Database had an error"}
+	}
 
 	// r.DB.S
 	// r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(&user)

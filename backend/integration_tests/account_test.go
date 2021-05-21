@@ -7,8 +7,12 @@ import (
 	"net/http/httptest"
 
 	"fmt"
-	// "log"
+	"log"
+	"strings"
 	"testing"
+
+	"github.com/Oasixer/ShopifyChallenge2021/utils"
+	"github.com/google/uuid"
 )
 
 type SignUpResponse struct {
@@ -43,6 +47,17 @@ type GetUserResponse struct {
 	Errors []Error `json:"errors"`
 }
 
+type SaveFileResponse struct {
+	Data struct {
+		File struct {
+			Name string
+			Uuid string
+			Tags string
+		} `json:"saveFile"`
+	} `json:"data"`
+	Errors []Error `json:"errors"`
+}
+
 type File struct {
 	Name string
 	Uuid string
@@ -67,10 +82,48 @@ type AccountData struct {
 	Password string
 }
 
-var Account1 = AccountData{Email: "abc@abc.com", Password: "123", Username: "abc"}
-var Account2 = AccountData{Email: "def@abc.com", Password: "456", Username: "123ABC"}
-var InvalidPassword = "asiodj19024ui!!Q@#!U" // arbitrary incorrect password
-var token string
+// helper function to confirm that graphql errors match expectations.
+// if no errors are expected, simply pass in an empty array for expectCodes
+func confirmErrors(errors []Error, expectCodes []string) bool {
+	// confirm equal lengths
+	if len(errors) != len(expectCodes) {
+		log.Printf("Fail: expected errors:\n\t%#v,\n\tgot: %s\n", expectCodes, errors)
+		return false
+	}
+
+	for _, err := range errors {
+		if len(expectCodes) == 0 {
+			log.Printf("Fail: expected no errors, got: %s\n", err)
+			return false
+		}
+
+		errIndex := utils.Find(expectCodes, err.Extensions.Code)
+		if errIndex == -1 { // if error not found in expected errors
+			log.Printf("Fail: expected errors:\n\t%#v,\n\tgot: %s\n", expectCodes, err)
+			return false
+		} else {
+			// found error, remove from slice so it doesn't get double counted
+			expectCodes[errIndex] = expectCodes[len(expectCodes)-1] // Copy last element to index i.
+			expectCodes[len(expectCodes)-1] = ""                    // Erase last element (write zero value).
+			expectCodes = expectCodes[:len(expectCodes)-1]          // Truncate slice.
+		}
+	}
+	return true
+}
+
+var ( // TODO probably move some of these to a shared file and make the rest lowercase
+	Account1        = AccountData{Email: "abc@abc.com", Password: "123", Username: "abc"}
+	Account2        = AccountData{Email: "def@abc.com", Password: "456", Username: "123ABC"}
+	InvalidPassword = "asiodj19024ui!!Q@#!U" // arbitrary incorrect password
+	Token           string
+	fileUuid, _     = uuid.NewUUID()
+	tags            = []string{"tag1", "tag2"}
+	File1           = File{
+		Name: "filename111",
+		Uuid: fileUuid.String(),
+		Tags: strings.Join(tags, ","),
+	}
+)
 
 // Test that a graceful failure occurs when trying to login to an account that does not exist
 func TestSignInInvalidAccount(t *testing.T) {
@@ -89,21 +142,23 @@ func TestSignInInvalidAccount(t *testing.T) {
 	req, err := http.NewRequest("POST", "/graphql", bytes.NewBuffer(jsonValue))
 
 	if err != nil {
-		fmt.Printf("The HTTP request failed with error %s\n", err)
+		log.Printf("The HTTP request failed with error %s\n", err)
 		t.Fail()
 	}
 
 	// Create the service and process the above request.
 	r.ServeHTTP(w, req)
 
-	var signInResponse SignInResponse
-	json.Unmarshal([]byte(w.Body.String()), &signInResponse)
-
 	if w.Code != http.StatusOK {
+		log.Printf("The request returned bad code: %d\n", w.Code)
 		t.Fail()
 	}
 
-	if signInResponse.Errors[0].Extensions.Code != "NotSignedUp" {
+	var signInResponse SignInResponse
+	json.Unmarshal([]byte(w.Body.String()), &signInResponse)
+
+	// expect NotSignedUp error
+	if !confirmErrors(signInResponse.Errors, []string{"NotSignedUp"}) {
 		t.Fail()
 	}
 }
@@ -131,25 +186,27 @@ func TestSignUp(t *testing.T) {
 	req, err := http.NewRequest("POST", "/graphql", bytes.NewBuffer(jsonValue))
 
 	if err != nil {
-		fmt.Printf("The HTTP request failed with error %s\n", err)
+		log.Printf("The HTTP request failed with error %s\n", err)
 		t.Fail()
 	}
 
 	// Create the service and process the above request.
 	r.ServeHTTP(w, req)
 
+	if w.Code != http.StatusOK {
+		log.Printf("The request returned bad code: %d\n", w.Code)
+		t.Fail()
+	}
+
 	var signUpResponse SignUpResponse
 	json.Unmarshal([]byte(w.Body.String()), &signUpResponse)
 
-	if signUpResponse.Errors != nil {
+	// expect no error
+	if !confirmErrors(signUpResponse.Errors, []string{}) {
 		t.Fail()
 	}
 
 	if signUpResponse.Data.SignUp.Email != Account1.Email {
-		t.Fail()
-	}
-
-	if w.Code != http.StatusOK {
 		t.Fail()
 	}
 }
@@ -171,27 +228,29 @@ func TestSignInInvalidPassword(t *testing.T) {
 	req, err := http.NewRequest("POST", "/graphql", bytes.NewBuffer(jsonValue))
 
 	if err != nil {
-		fmt.Printf("The HTTP request failed with error %s\n", err)
+		log.Printf("The HTTP request failed with error %s\n", err)
 		t.Fail()
 	}
 
 	// Create the service and process the above request.
 	r.ServeHTTP(w, req)
 
-	var signInResponse SignInResponse
-	json.Unmarshal([]byte(w.Body.String()), &signInResponse)
-
 	if w.Code != http.StatusOK {
+		log.Printf("The request returned bad code: %d\n", w.Code)
 		t.Fail()
 	}
 
-	if signInResponse.Errors[0].Extensions.Code != "PassBad" {
+	var signInResponse SignInResponse
+	json.Unmarshal([]byte(w.Body.String()), &signInResponse)
+
+	// expect PassBad error
+	if !confirmErrors(signInResponse.Errors, []string{"PassBad"}) {
 		t.Fail()
 	}
 }
 
 // test that a sign in occurs succesfully with valid credentials.
-// stores the jwt token returned on success in variable 'token', to authenticate the next test.
+// stores the jwt token returned on success in variable 'Token', to authenticate the next test.
 func TestSignIn(t *testing.T) {
 	// Create a response recorder
 	w := httptest.NewRecorder()
@@ -208,24 +267,26 @@ func TestSignIn(t *testing.T) {
 	req, err := http.NewRequest("POST", "/graphql", bytes.NewBuffer(jsonValue))
 
 	if err != nil {
-		fmt.Printf("The HTTP request failed with error %s\n", err)
+		log.Printf("The HTTP request failed with error %s\n", err)
 		t.Fail()
 	}
 
 	// Create the service and process the above request.
 	r.ServeHTTP(w, req)
 
+	if w.Code != http.StatusOK {
+		log.Printf("The request returned bad code: %d\n", w.Code)
+		t.Fail()
+	}
+
 	var signInResponse SignInResponse
 	json.Unmarshal([]byte(w.Body.String()), &signInResponse)
 
-	if w.Code != http.StatusOK {
+	// expect no error
+	if !confirmErrors(signInResponse.Errors, []string{}) {
 		t.Fail()
 	}
-
-	if signInResponse.Errors != nil {
-		t.Fail()
-	}
-	token = signInResponse.Data.SignIn
+	Token = signInResponse.Data.SignIn
 }
 
 func TestGetUserNotAuth(t *testing.T) {
@@ -249,25 +310,23 @@ func TestGetUserNotAuth(t *testing.T) {
 	req, err := http.NewRequest("POST", "/graphql", bytes.NewBuffer(jsonValue))
 
 	if err != nil {
-		fmt.Printf("The HTTP request failed with error %s\n", err)
+		log.Printf("The HTTP request failed with error %s\n", err)
 		t.Fail()
 	}
 
 	// Create the service and process the above request.
 	r.ServeHTTP(w, req)
 
+	if w.Code != http.StatusOK {
+		log.Printf("The request returned bad code: %d\n", w.Code)
+		t.Fail()
+	}
+
 	var getUserResponse GetUserResponse
 	json.Unmarshal([]byte(w.Body.String()), &getUserResponse)
 
-	if w.Code != http.StatusOK {
-		t.Fail()
-	}
-
-	// Errors should be a NotAuth error
-	if getUserResponse.Errors == nil {
-		t.Fail()
-	}
-	if getUserResponse.Errors[0].Extensions.Code != "NotAuth" {
+	// expect NotAuth error
+	if !confirmErrors(getUserResponse.Errors, []string{"NotAuth"}) {
 		t.Fail()
 	}
 }
@@ -296,23 +355,25 @@ func TestGetUser(t *testing.T) {
 	jsonValue, _ := json.Marshal(jsonData)
 	req, err := http.NewRequest("POST", "/graphql", bytes.NewBuffer(jsonValue))
 
-	req.Header.Set("Authorization", token)
+	req.Header.Set("Authorization", Token)
 
 	if err != nil {
-		fmt.Printf("The HTTP request failed with error %s\n", err)
+		log.Printf("The HTTP request failed with error %s\n", err)
 	}
 
 	// Create the service and process the above request.
 	r.ServeHTTP(w, req)
 
-	var getUserResponse GetUserResponse
-	json.Unmarshal([]byte(w.Body.String()), &getUserResponse)
-
 	if w.Code != http.StatusOK {
+		log.Printf("The request returned bad code: %d\n", w.Code)
 		t.Fail()
 	}
 
-	if getUserResponse.Errors != nil {
+	var getUserResponse GetUserResponse
+	json.Unmarshal([]byte(w.Body.String()), &getUserResponse)
+
+	// expect no error
+	if !confirmErrors(getUserResponse.Errors, []string{}) {
 		t.Fail()
 	}
 
@@ -325,6 +386,100 @@ func TestGetUser(t *testing.T) {
 	}
 
 	if len(getUserResponse.Data.User.Files) != 0 {
+		t.Fail()
+	}
+}
+
+func TestSaveFile(t *testing.T) {
+	// Create a response recorder
+	w := httptest.NewRecorder()
+
+	// Get a new router
+	r := getRouter()
+
+	jsonData := map[string]string{
+		"query": fmt.Sprintf(`
+		   mutation{ 
+				 saveFile(uuid: "%s", name: "%s", tags: "%s"){
+					 uuid
+					 name
+					 tags
+				 }
+		   }`, File1.Uuid, File1.Name, File1.Tags),
+	}
+	jsonValue, _ := json.Marshal(jsonData)
+	req, err := http.NewRequest("POST", "/graphql", bytes.NewBuffer(jsonValue))
+	req.Header.Set("Authorization", Token)
+
+	if err != nil {
+		log.Printf("The HTTP request failed with error %s\n", err)
+		t.Fail()
+	}
+
+	// Create the service and process the above request.
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		log.Printf("The request returned bad code: %d\n", w.Code)
+		t.Fail()
+	}
+
+	var saveFileResponse SaveFileResponse
+	json.Unmarshal([]byte(w.Body.String()), &saveFileResponse)
+
+	// expect no error
+	if !confirmErrors(saveFileResponse.Errors, []string{}) {
+		t.Fail()
+	}
+
+	if saveFileResponse.Data.File.Uuid != File1.Uuid {
+		log.Printf("Fail: expected Uuid: %s, got: %s\n", File1.Uuid, saveFileResponse.Data.File.Uuid)
+		log.Printf("Response unformatted: %#v\n\n", w.Body.String())
+		log.Printf("Response formatted: %#v\n\n", saveFileResponse)
+		t.Fail()
+	}
+
+	// now confirm that it persisted to the db
+	getUserJsonData := map[string]string{
+		"query": `{ getUser {
+				files {
+					name,
+					tags,
+					uuid
+				}
+		 	}
+		 }`,
+	}
+	getUserJsonValue, _ := json.Marshal(getUserJsonData)
+	req, err = http.NewRequest("POST", "/graphql", bytes.NewBuffer(getUserJsonValue))
+	req.Header.Set("Authorization", Token)
+
+	if err != nil {
+		log.Printf("The HTTP request failed with error %s\n", err)
+		t.Fail()
+	}
+
+	// Create the service and process the above request.
+	w_ := httptest.NewRecorder()
+	r.ServeHTTP(w_, req)
+
+	if w_.Code != http.StatusOK {
+		log.Printf("The request returned bad code: %d\n", w_.Code)
+		t.Fail()
+	}
+
+	var getUserResponse GetUserResponse
+	json.Unmarshal([]byte(w_.Body.String()), &getUserResponse)
+
+	// expect no error
+	if !confirmErrors(getUserResponse.Errors, []string{}) {
+		t.Fail()
+	}
+
+	// expect a file
+	if len(getUserResponse.Data.User.Files) != 1{
+		log.Println("file did not get associated to the user WTF bro")
+		log.Printf("response unformatted: %#v\n\n", w_.Body.String())
 		t.Fail()
 	}
 }
