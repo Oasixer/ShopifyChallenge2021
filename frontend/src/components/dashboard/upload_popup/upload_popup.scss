@@ -15,6 +15,9 @@ div.uploadPopup{
 		flex: 1 0 auto;
 		margin: 85px 75px;
 		color: white;
+		&.highlighted{
+			background-color: rgba(0,0,0,0.3);
+		}
 		@include force-vertical-text-centering(80px);
 	}
 	div.icon-wrapper{
