@@ -1,6 +1,6 @@
 # ShopifyChallenge2021
 ## UPDATE MAY 21
-I fixed all the problems / incomplete features with this app (after the deadline), see ['v2' branch instead](htts)
+I fixed all the problems / incomplete features with this app (after the deadline), see ['v2' branch instead](https://github.com/Oasixer/ShopifyChallenge2021/tree/v2)
 
 ## Old README
 ~~Unfortunately, I let the scope of this project creep too wide to wrap it up in a satisfactory way by the deadline. However, you can see a live, semi-working demo of what I have, here~~
