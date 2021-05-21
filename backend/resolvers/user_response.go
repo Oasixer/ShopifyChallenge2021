@@ -3,11 +3,11 @@ package resolvers
 import (
 	"strconv"
 	"log"
+	"fmt"
 
 	graphql "github.com/graph-gophers/graphql-go"
 
 	"github.com/Oasixer/ShopifyChallenge2021/model"
-	// "github.com/Oasixer/ShopifyChallenge2021/db"
 )
 
 // UserResponse is the user response type
@@ -48,13 +48,9 @@ func (r *UserResponse) UpdatedAt() string {
 
 // Files for UserResponse
 func (r *UserResponse) Files() []*FileResponse {
-	log.Printf("%v",len(r.u.Files))
 	var files []*FileResponse
 	for _, file := range r.u.Files {
 		files = append(files, &FileResponse{&file})
 	}
-	// var files []model.File
-	// db.DB.Where(&files, "UserID = ?",r.u.ID).Find(&files)
-	// files := db.DB.Find(&)
 	return files
 }

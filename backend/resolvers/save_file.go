@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"strconv"
+	// "strconv"
 
 	"github.com/Oasixer/ShopifyChallenge2021/handler"
 	"github.com/Oasixer/ShopifyChallenge2021/model"
@@ -19,36 +19,15 @@ func (r *Resolvers) SaveFile(ctx context.Context, args saveFileArgs) (*FileRespo
 	if userID == nil {
 		return nil, &getUserError{Code: "NotAuth", Message: "Not Authorized"}
 	}
-	log.Print("FUCK_1")
 	user := model.User{}
 	if err := r.DB.First(&user, userID).Error; err != nil {
 		return nil, &getUserError{Code: "NotFound", Message: "User not found"}
 	}
 
 	uuid_ := uuid.MustParse(args.Uuid)
-
-	// if !r.DB.Where("Uuid = ?", uuid_).First(&model.File{}).RecordNotFound() {
-	// return nil, &fileCreationError{Code:"FileExists", Message: "File already exists within DB"}
-	// }
-	// log.Print("FUCK_2")
-
-	userID64, _ := strconv.ParseUint(userID.(string), 10, 32)
-
-	newFile := model.File{Name: args.Name, Uuid: uuid_, UserID: uint(userID64), Tags: args.Tags}
+	newFile := model.File{Name: args.Name, Uuid: uuid_, Tags: args.Tags}
 	r.DB.Model(&user).Association("Files").Append(&newFile);
-	log.Print("FUCK_3")
-	// result := r.DB.Create(&newFile)
-	result := r.DB.Save(&newFile)
-	result = r.DB.Save(&user)
-
-	r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(&user)
-	if result.Error != nil {
-		return nil, &fileCreationError{Code: "DBErr", Message: "Database had an error"}
-	}
-
-	// r.DB.S
-	// r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(&user)
-	// log.Printf("User files[0]:%s",user.Files[0].Name)
+	r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 	return &FileResponse{f: &newFile}, nil
 }
 

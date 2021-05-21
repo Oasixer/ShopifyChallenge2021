@@ -17,7 +17,7 @@ func (r *Resolvers) GetUser(ctx context.Context) (*UserResponse, error) {
 	}
 
 	user := model.User{}
-	if err := r.DB.First(&user, userID).Error; err != nil {
+	if err := r.DB.Preload("Files").First(&user, userID).Error; err != nil {
 		return nil, &getUserError{Code: "NotFound", Message: "User not found"}
 	}
 	return &UserResponse{u: &user}, nil
