@@ -18,7 +18,11 @@ Feature completion
 - [ ] refactor save_file and get_file handlers to eliminate duplicate code
 - [ ] server side input validation
 - [ ] client side input validation
+- [ ] unit test input validation
 - [ ] general cleanup
+- [ ] fix homepage flex display weirdness on smaller screens
+- [ ] make an overview page
+- [ ] make a demos page
 
 ## Run unit and integration tests
 ```bash

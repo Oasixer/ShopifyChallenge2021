@@ -5,7 +5,7 @@
 	import { sessionToken } from '../store/session.js';
 	onMount(async () => {
 		if (!$sessionToken){
-			window.open('/login');
+			window.open('/login', '_self');
 		}
 	}); 
 </script>

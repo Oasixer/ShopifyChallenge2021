@@ -16,13 +16,14 @@ div#registerMain{
 	align-items: center;
 	flex-flow: row nowrap;
 	background-color: $bg_0;
+	max-height: 100vh;
 }
 
 div#createAccountMain{
 	display: flex;
 	flex-flow: column nowrap;
 	padding: 40px;
-	flex: 1 1 1000px;
+	flex: 1 1 700px;
 	height: fit-content;
 	background-color: $bg_2;
 	border-radius: 14px;
