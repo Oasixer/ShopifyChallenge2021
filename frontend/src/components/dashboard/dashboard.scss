@@ -1,5 +1,6 @@
 @import '../general/scss/colours.scss';
 @import '../general/scss/fonts.scss';
+@import '../general/scss/standard_stuff.scss';
 
 $thumbWidth: 140px;
 $thumbPad: 15px;
@@ -26,47 +27,57 @@ div#dashboardMain{
 			padding: 0;
 			align-items: flex-start;
 			justify-content: flex-start;
-			div.dashboardThumb{
-				margin: $thumbPad;
-				img{
-					width: $thumbWidth;
-					cursor: pointer;
-				}
-				div.dashboardThumbLabel{
-					padding: 14px;
-					background-color: $bg_2b;
-					*{
-						font-family: $poppins;
-						font-style: normal;
-						font-weight: normal;
+			div.thumbWrap{
+				// position: absolute;
+				opacity: 0.99;
+
+				div.dashboardThumb{
+					margin: $thumbPad;
+					display: flex;
+					flex-flow: column nowrap;
+					@include force-width($thumbWidth);
+					border-radius: 8px;
+					overflow: hidden; 
+					img{
+						width: $thumbWidth;
+						cursor: pointer;
 					}
-					div.dashboardThumbLabelTitle{
-						margin-bottom: 15px;
-						font-size: 18px;
-						color: #FFFFFF;
-					}
-					div.dashboardThumbLabelTags{
-						font-size: 15px;
-						color: #C4C4C4;				
-						display: flex;
-						flex-flow: row wrap;
-						justify-content: flex-start;
-						width: 100%;
-						div.tagContain{
-							margin: 0;
-							padding: 0;
-							width: fit-content;
+					div.dashboardThumbLabel{
+						padding: 14px;
+						background-color: $bg_2b;
+						*{
+							font-family: $poppins;
+							font-style: normal;
+							font-weight: normal;
+						}
+						div.dashboardThumbLabelTitle{
+							margin-bottom: 15px;
+							font-size: 18px;
+							color: #FFFFFF;
+						}
+						div.dashboardThumbLabelTags{
+							font-size: 15px;
+							color: #C4C4C4;				
 							display: flex;
-							flex-flow: row nowrap;
+							flex-flow: row wrap;
 							justify-content: flex-start;
-							span.matched{
-								text-decoration: underline;
-							}
-							span.unmatched{
-								text-decoration: none;
-							}
-							&.notLast{
-								margin-right: 4px;
+							width: 100%;
+							div.tagContain{
+								margin: 0;
+								padding: 0;
+								width: fit-content;
+								display: flex;
+								flex-flow: row nowrap;
+								justify-content: flex-start;
+								span.matched{
+									text-decoration: underline;
+								}
+								span.unmatched{
+									text-decoration: none;
+								}
+								&.notLast{
+									margin-right: 4px;
+								}
 							}
 						}
 					}

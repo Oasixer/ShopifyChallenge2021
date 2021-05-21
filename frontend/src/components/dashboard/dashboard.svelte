@@ -192,20 +192,22 @@
 		<div class='dashboardImages'>
 			{#each filterFiles(files) as img}
 				{#if showFile(img)}
-					<div class='dashboardThumb'>
-						<img src='{img.data}' alt='image{img.name}'/>
-						<div class='dashboardThumbLabel'>
-							<div class='dashboardThumbLabelTitle'>
-								{img.name}
-							</div>
-							<div class='dashboardThumbLabelTags'>
-								{#each img.tags as tag, n}
-									<div class='tagContain' class:notLast={n!==img.tags.length-1}>
-										<span class='unmatched tag'>{getPreMatchChars(tag)}</span>
-										<span class='matched tag'>{getMatchChars(tag)}</span>
-										<span class='unmatched tag'>{getPostMatchChars(tag)}{n===img.tags.length-1?'':','}</span>
-									</div>
-								{/each}
+					<div class='thumbWrap'>
+						<div class='dashboardThumb'>
+							<img src='{img.data}' alt='image{img.name}'/>
+							<div class='dashboardThumbLabel'>
+								<div class='dashboardThumbLabelTitle'>
+									{img.name}
+								</div>
+								<div class='dashboardThumbLabelTags'>
+									{#each img.tags as tag, n}
+										<div class='tagContain' class:notLast={n!==img.tags.length-1}>
+											<span class='unmatched tag'>{getPreMatchChars(tag)}</span>
+											<span class='matched tag'>{getMatchChars(tag)}</span>
+											<span class='unmatched tag'>{getPostMatchChars(tag)}{n===img.tags.length-1?'':','}</span>
+										</div>
+									{/each}
+								</div>
 							</div>
 						</div>
 					</div>
