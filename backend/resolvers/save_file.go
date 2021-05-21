@@ -20,12 +20,12 @@ func (r *Resolvers) SaveFile(ctx context.Context, args saveFileArgs) (*FileRespo
 		return nil, &getUserError{Code: "NotAuth", Message: "Not Authorized"}
 	}
 	user := model.User{}
-	if err := r.DB.First(&user, userID).Error; err != nil {
+	if err := r.DB.Preload("Files").First(&user, userID).Error; err != nil {
 		return nil, &getUserError{Code: "NotFound", Message: "User not found"}
 	}
 
 	uuid_ := uuid.MustParse(args.Uuid)
-	newFile := model.File{Name: args.Name, Uuid: uuid_, Tags: args.Tags}
+	newFile := model.File{Name: args.Name, Uuid: uuid_, Tags: args.Tags, FileExt: args.FileExt}
 	r.DB.Model(&user).Association("Files").Append(&newFile);
 	r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 	return &FileResponse{f: &newFile}, nil
@@ -35,6 +35,7 @@ type saveFileArgs struct {
 	Uuid string
 	Name string
 	Tags string
+	FileExt string
 }
 
 // file exists error

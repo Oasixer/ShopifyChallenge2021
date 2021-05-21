@@ -21,9 +21,10 @@ div#newFilePageMain{
 			flex-flow: row nowrap;
 			justify-content: stretch;
 			height: fit-content;
+			padding: 15px 0;
 			input.title{
 				background-color: transparent;
-				padding: 1em;
+				padding: 0.4em;
 				min-height: 50px;
 				max-height: 50px;
 				width: 100%;
@@ -33,7 +34,11 @@ div#newFilePageMain{
 				font: $poppins;
 				font-weight: 500;
 				font-size: 40px;
-				color: darken($text_0, 0.3)
+				color: darken($text_0, 0.3);
+				&.needTitle{
+					border: 3px solid rgba(255,0,0,0.4);
+					border-radius: 9px;
+				}
 			}
 		}
 		div.imgContain{
@@ -50,7 +55,13 @@ div#newFilePageMain{
 			border-radius: 10px;
 			box-shadow: 0 0 41px 4px rgba(0, 0, 0, 0.5);
 		}
-		div.tags{
+		div.addTagsLabel{
+			color: #9F9B9B;
+			font-family: $poppins;
+			font-style: normal;
+			font-weight: normal;
+			font-size: 14px;
+			margin-right: auto;
 		}
 	}
 }

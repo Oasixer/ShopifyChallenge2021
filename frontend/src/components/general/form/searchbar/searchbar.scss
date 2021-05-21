@@ -1,0 +1,36 @@
+@import '../../scss/form.scss';
+@import '../../scss/standard_stuff.scss';
+@import '../../scss/colours.scss';
+@import "../../scss/fonts.scss";
+div.searchOuter{
+	@include force-height(50px);
+	background-color: $bg_0;
+	border-radius: 7px;
+	width: 600px;
+	display: flex;
+	flex-flow: row nowrap;
+	button.searchIconWrapper{
+		cursor: pointer;
+		margin: auto 10px;
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    width: fit-content;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    top: 0px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50%;
+	}
+	input{
+		@include text-input-main-page;
+		background-color: transparent;
+		color: $text_0;
+		font-family: $poppins;
+		font-weight: 500;
+		font-size: 19px;
+	}
+}

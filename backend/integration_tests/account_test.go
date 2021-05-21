@@ -53,6 +53,7 @@ type SaveFileResponse struct {
 			Name string
 			Uuid string
 			Tags string
+			FileExt string
 		} `json:"saveFile"`
 	} `json:"data"`
 	Errors []Error `json:"errors"`
@@ -62,6 +63,7 @@ type File struct {
 	Name string
 	Uuid string
 	Tags string
+	FileExt string
 }
 
 type ErrorExtensions struct {
@@ -111,17 +113,25 @@ func confirmErrors(errors []Error, expectCodes []string) bool {
 	return true
 }
 
-var ( // TODO probably move some of these to a shared file and make the rest lowercase
+var ( // TODO probably move some of these to a shared file and make the rest private
 	Account1        = AccountData{Email: "abc@abc.com", Password: "123", Username: "abc"}
 	Account2        = AccountData{Email: "def@abc.com", Password: "456", Username: "123ABC"}
 	InvalidPassword = "asiodj19024ui!!Q@#!U" // arbitrary incorrect password
 	Token           string
 	fileUuid, _     = uuid.NewUUID()
+	fileUuid2, _    = uuid.NewUUID()
 	tags            = []string{"tag1", "tag2"}
 	File1           = File{
 		Name: "filename111",
 		Uuid: fileUuid.String(),
 		Tags: strings.Join(tags, ","),
+		FileExt: "png",
+	}
+	File2 = File{
+		Name: "filename222",
+		Uuid: fileUuid2.String(),
+		Tags: "",
+		FileExt: "png",
 	}
 )
 
@@ -400,12 +410,12 @@ func TestSaveFile(t *testing.T) {
 	jsonData := map[string]string{
 		"query": fmt.Sprintf(`
 		   mutation{ 
-				 saveFile(uuid: "%s", name: "%s", tags: "%s"){
+				 saveFile(uuid: "%s", name: "%s", tags: "%s", fileExt: "%s"){
 					 uuid
 					 name
 					 tags
 				 }
-		   }`, File1.Uuid, File1.Name, File1.Tags),
+		   }`, File1.Uuid, File1.Name, File1.Tags, File1.FileExt),
 	}
 	jsonValue, _ := json.Marshal(jsonData)
 	req, err := http.NewRequest("POST", "/graphql", bytes.NewBuffer(jsonValue))
@@ -433,7 +443,13 @@ func TestSaveFile(t *testing.T) {
 	}
 
 	if saveFileResponse.Data.File.Uuid != File1.Uuid {
-		log.Printf("Fail: expected Uuid: %s, got: %s\n", File1.Uuid, saveFileResponse.Data.File.Uuid)
+		log.Printf("Fail: expected Uuid: %#v, got: %#v\n", File1.Uuid, saveFileResponse.Data.File.Uuid)
+		log.Printf("Response unformatted: %#v\n\n", w.Body.String())
+		log.Printf("Response formatted: %#v\n\n", saveFileResponse)
+		t.Fail()
+	}
+	if saveFileResponse.Data.File.Tags != File1.Tags {
+		log.Printf("Fail: expected Tags: %#v, got: %#v\n", File1.Tags, saveFileResponse.Data.File.Tags)
 		log.Printf("Response unformatted: %#v\n\n", w.Body.String())
 		log.Printf("Response formatted: %#v\n\n", saveFileResponse)
 		t.Fail()
@@ -443,8 +459,8 @@ func TestSaveFile(t *testing.T) {
 	getUserJsonData := map[string]string{
 		"query": `{ getUser {
 				files {
-					name,
-					tags,
+					name
+					tags
 					uuid
 				}
 		 	}
@@ -477,9 +493,108 @@ func TestSaveFile(t *testing.T) {
 	}
 
 	// expect a file
-	if len(getUserResponse.Data.User.Files) != 1{
-		log.Println("file did not get associated to the user WTF bro")
+	if len(getUserResponse.Data.User.Files) != 1 {
+		log.Println("Fail: file did not get associated to the user")
 		log.Printf("response unformatted: %#v\n\n", w_.Body.String())
 		t.Fail()
 	}
+}
+
+// make sure that the relationship handles multiple files
+func TestSaveSecondFile(t *testing.T) {
+	// Create a response recorder
+	w := httptest.NewRecorder()
+
+	// Get a new router
+	r := getRouter()
+
+	jsonData := map[string]string{
+		"query": fmt.Sprintf(`
+		   mutation{ 
+				 saveFile(uuid: "%s", name: "%s", tags: "%s", fileExt: "%s"){
+					 uuid
+					 name
+					 tags
+				 }
+		   }`, File2.Uuid, File2.Name, File2.Tags, File2.FileExt),
+	}
+	jsonValue, _ := json.Marshal(jsonData)
+	req, err := http.NewRequest("POST", "/graphql", bytes.NewBuffer(jsonValue))
+	req.Header.Set("Authorization", Token)
+
+	if err != nil {
+		log.Printf("The HTTP request failed with error %s\n", err)
+		t.Fail()
+	}
+
+	// Create the service and process the above request.
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		log.Printf("The request returned bad code: %d\n", w.Code)
+		t.Fail()
+	}
+
+	var saveFileResponse SaveFileResponse
+	json.Unmarshal([]byte(w.Body.String()), &saveFileResponse)
+
+	// expect no error
+	if !confirmErrors(saveFileResponse.Errors, []string{}) {
+		t.Fail()
+	}
+
+	if saveFileResponse.Data.File.Uuid != File2.Uuid {
+		log.Printf("Fail: expected Uuid: %#v, got: %#v\n", File2.Uuid, saveFileResponse.Data.File.Uuid)
+		log.Printf("Response unformatted: %#v\n\n", w.Body.String())
+		log.Printf("Response formatted: %#v\n\n", saveFileResponse)
+		t.Fail()
+	}
+
+	// now confirm that it persisted to the db
+	getUserJsonData := map[string]string{
+		"query": `{ getUser {
+				files {
+					name
+					tags
+					uuid
+					fileExt
+				}
+		 	}
+		 }`,
+	}
+	getUserJsonValue, _ := json.Marshal(getUserJsonData)
+	req, err = http.NewRequest("POST", "/graphql", bytes.NewBuffer(getUserJsonValue))
+	req.Header.Set("Authorization", Token)
+
+	if err != nil {
+		log.Printf("The HTTP request failed with error %s\n", err)
+		t.Fail()
+	}
+
+	// Create the service and process the above request.
+	w_ := httptest.NewRecorder()
+	r.ServeHTTP(w_, req)
+
+	if w_.Code != http.StatusOK {
+		log.Printf("The request returned bad code: %d\n", w_.Code)
+		t.Fail()
+	}
+
+	var getUserResponse GetUserResponse
+	json.Unmarshal([]byte(w_.Body.String()), &getUserResponse)
+
+	// expect no error
+	if !confirmErrors(getUserResponse.Errors, []string{}) {
+		t.Fail()
+	}
+
+	// expect a file
+	if len(getUserResponse.Data.User.Files) != 2 {
+		log.Println("Fail: file did not get associated to the user WTF bro")
+		log.Printf("response unformatted: %#v\n\n", w_.Body.String())
+		t.Fail()
+	}
+
+	// log.Printf("response unformatted: %#v\n\n", w_.Body.String())
+	// if (getUserResponse.Data.User.Files[1].Uuid != )
 }

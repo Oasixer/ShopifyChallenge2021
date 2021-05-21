@@ -48,7 +48,9 @@ func (r *UserResponse) UpdatedAt() string {
 func (r *UserResponse) Files() []*FileResponse {
 	var files []*FileResponse
 	for _, file := range r.u.Files {
-		files = append(files, &FileResponse{&file})
+		fileCopy := file // needed b/c for loops assign to same mem address repeatedly
+		fileResp := FileResponse{&fileCopy}
+		files = append(files, &fileResp)
 	}
 	return files
 }

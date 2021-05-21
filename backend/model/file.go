@@ -14,5 +14,7 @@ type File struct {
 
 	Uuid uuid.UUID // file UUID
 
+	FileExt string `gorm:"not null"`
+
 	UserID uint // foreign key
 }

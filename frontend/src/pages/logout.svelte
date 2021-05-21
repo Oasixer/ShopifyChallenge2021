@@ -8,5 +8,5 @@
 
 </script>
 
-<h1>Succesfully logged out. Returning to homepage</h1>
-<Countdown countdown={3} on:completed="{() => window.open('/', '_self')}"/>
+<h1>Logged out. Returning to homepage</h1>
+<Countdown countdown={2} on:completed="{() => window.open('/', '_self')}"/>

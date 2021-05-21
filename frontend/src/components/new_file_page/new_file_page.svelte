@@ -1,29 +1,16 @@
 <script>
 	import TopbarDash from '../general/menu/topbar_dash/topbar.svelte';
-	import TagCreate from '../tag_create/tag_create.svelte';
+	import TagCreate from '../tag_create/tag_create2.svelte';
 	import { fileUpload } from '../../store/file.js';
 	import { mutation } from '@urql/svelte';
 
-	// const base64 = require('base-64');
-
-	// function _arrayBufferToBase64( buffer ) {
-		// var binary = '';
-		// var bytes = new Uint8Array( buffer );
-		// var len = bytes.byteLength;
-		// for (var i = 0; i < len; i++) {
-				// binary += String.fromCharCode( bytes[ i ] );
-		// }
-		// return base64.encode( binary );
-	// }
-	// let files = ['https://images.unsplash.com/photo-1481349518771-20055b2a7b24?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cmFuZG9tfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80'];
-
 	let title;
 
+	let needTitle = false;
+
 	const fileInfo = JSON.parse($fileUpload);
-	console.log(`fileInfo: ${JSON.stringify(fileInfo)}`);
 	const fileExt = fileInfo.fileExt;
 	const fileUuid = fileInfo.uuid;
-	console.log(`fileExt: ${fileInfo.fileExt}`);
 
 	const getImage = async () => {
 		let url = new URL(`${window.location.protocol}//${window.location.host}/api/download-file`);
@@ -32,36 +19,23 @@
 		return result.blob();
 	}
 
-
-
-	// function hexToBase64(str) {
-		// return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
-	// }
-	let fr = new FileReader();
-	let imgData;
-	fr.onload = function ( oFREvent ) {
-		imgData = btoa(oFREvent.target.result);
-	}
 	getImage().then((blob)=>{
-		// console.log(`fetched.${JSON.stringify(blob)}`);
-		// fr.readAsText(blob, "utf-8")
-		// console.log(`fetched.${imgData}`);
     var img = URL.createObjectURL(blob);
-    // Do whatever with the img
     document.getElementById('img1').setAttribute('src', img);
 	});
 
-	$: console.log(JSON.stringify(imgData));
+	// $: console.log(JSON.stringify(imgData));
 	
 	let tags;
 
 	const saveFileMutation = mutation({
 			query: `
-			mutation($name: String!, $uuid: String!, $tags: String!){
+			mutation($name: String!, $uuid: String!, $tags: String!, $fileExt: String!){
 				saveFile(
 					name: $name,
 					tags: $tags,
-					uuid: $uuid
+					uuid: $uuid,
+ 					fileExt: $fileExt
 				){
 					uuid
 				}
@@ -69,18 +43,24 @@
 		`,
 	});
 	const submitFile = () => {
+		if (!title){
+			needTitle=true;
+			return;
+		}
+		console.log(`FUCKIN TAGS: ${JSON.stringify(tags)}`);
+		console.log(`filtered!!!: ${tags.filter(x=>x.name.length>0).map(x=>x.name).join(',')}`);
 		saveFileMutation({
 			name: title,
 			uuid: fileUuid,
-			tags: tags.filter(x=>x.name.length>0).map(x=>x.name).join(',')
+			tags: tags.filter(x=>x.name.length>0).map(x=>x.name).join(','),
+			fileExt: fileExt
 		}).then(result => {
 			if (result.data) {
 				console.log('GOT RESULT!!');
-				console.log(result.data.uuid);
+				console.log(result.data.saveFile.uuid);
 				console.log(JSON.stringify(result.data));
-				// window.open();
+				window.open("/dashboard", "_self");
 			} else if (result.error) {
-				// displayErrorPopup = true;
 				console.error(result.error);
 			}
 		});
@@ -93,11 +73,12 @@
 	<TopbarDash showUpload={false}/>
 	<div class='content'>
 		<div class='titleContain'>
-			<input type='text' class='title' placeholder='Add title' bind:value={title}>
+			<input type='text' class='title' class:needTitle placeholder='Add title' bind:value={title} on:focus={()=>{needTitle=false}}>
 		</div>
 		<div class='imgContain'>
 			<img id='img1' alt='hi' src=''>
 		</div>
+		<div class='addTagsLabel'>Add tags</div>
 		<TagCreate bind:tags/>
 		<button class='submit' on:click={submitFile}>Upload</button>
 	</div>

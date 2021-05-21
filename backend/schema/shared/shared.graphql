@@ -11,6 +11,7 @@ type File {
   id: ID!
   name: String!
   uuid: String!
+  fileExt: String!
   createdAt: String!
   updatedAt: String!
   tags: String!

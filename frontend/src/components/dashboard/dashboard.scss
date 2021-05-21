@@ -1,8 +1,76 @@
 @import '../general/scss/colours.scss';
+@import '../general/scss/fonts.scss';
+
+$thumbWidth: 140px;
+$thumbPad: 15px;
 div#dashboardMain{
 	background-color: $bg_0;
 	min-height: 100vh;
 	height: fit-content;
 	display: flex;
 	flex-flow: column nowrap;
+	div#dashboardContent{
+		background-color: $bg_2;
+		border-radius: 19px;
+		display: flex;
+		flex-flow: column nowrap;
+		align-items: flex-start;
+		justify-content: flex-start;
+		max-width: 1100px;
+		padding: 80px;
+		div.dashboardImages{
+			display: flex;
+			flex-flow: row wrap;
+			margin: 0;
+			padding: 0;
+			align-items: flex-start;
+			justify-content: flex-start;
+			div.dashboardThumb{
+				margin: $thumbPad;
+				img{
+					width: $thumbWidth;
+					cursor: pointer;
+				}
+				div.dashboardThumbLabel{
+					padding: 14px;
+					background-color: $bg_2b;
+					*{
+						font-family: $poppins;
+						font-style: normal;
+						font-weight: normal;
+					}
+					div.dashboardThumbLabelTitle{
+						margin-bottom: 15px;
+						font-size: 18px;
+						color: #FFFFFF;
+					}
+					div.dashboardThumbLabelTags{
+						font-size: 15px;
+						color: #C4C4C4;				
+						*{
+							margin: 0;
+							padding: 0;
+						}
+						span.matched{
+							text-decoration: underline;
+						}
+						span.unmatched{
+							text-decoration: none;
+						}
+					}
+				}
+			}
+		}
+		div.noImagesText{
+			color: $text_0;
+			margin-top: 30px;
+			font-size: 20px;
+			font-family: $poppins;
+			font-style: normal;
+			font-weight: bold;
+			font-size: 20px;
+			line-height: 46px;
+		}
+	}
 }
+

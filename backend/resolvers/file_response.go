@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"strconv"
+	"log"
 
 	graphql "github.com/graph-gophers/graphql-go"
 
@@ -27,7 +28,12 @@ func (r *FileResponse) Uuid() string {
 }
 
 func (r *FileResponse) Tags() string {
+	log.Printf("!!!tags: %#v", r.f.Tags)
 	return r.f.Tags
+}
+
+func (r *FileResponse) FileExt() string {
+	return r.f.FileExt
 }
 
 func (r *FileResponse) CreatedAt() string {
