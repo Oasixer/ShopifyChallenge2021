@@ -1,6 +1,6 @@
 <script>
 	import TopbarDash from '../general/menu/topbar_dash/topbar.svelte';
-	import TagCreate from '../tag_create/tag_create2.svelte';
+	import TagCreate from '../tag_create/tag_create.svelte';
 	import { fileUpload } from '../../store/file.js';
 	import { mutation } from '@urql/svelte';
 
