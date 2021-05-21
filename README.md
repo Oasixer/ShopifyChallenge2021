@@ -1,6 +1,5 @@
 # ShopifyChallenge2021
-Unfortunately, I let the scope of this project creep too wide to wrap it up in a satisfactory way by the deadline. However, you can see a live, semi-working demo of what I have, here: 
-https://shopify2021-57nddaoela-ue.a.run.app
+[live app](https://shopify2021-57nddaoela-ue.a.run.app)
 
 Feature completion
 - [x] user registration (backend + frontend)
@@ -9,35 +8,30 @@ Feature completion
 - [x] password storage, hashing
 - [x] file upload page
 - [x] upload file to gcp bucket
-- [ ] update db: add file and append to user.files relationship !!!this is what I got stuck on for a day - for some reason I can't get my GORM to properly update this relationship, no matter what I tried
-- [ ] dashboard page displaying your images (BLOCKED by the above - dashboard page currently just )
-- [x] display image tags in the upload screen with suggestions, autofill, etc. [ this is semi complete but the code is spaghetti because I was trying to get the tag logic fixed. ]
-
+- [x] update db: add file and append to user.files relationship
+- [x] dashboard page displaying your images
+- [x] display image tags in the upload screen
 - [x] basic unit tests
-- [ ] integration tests, and decent unit test coverage
-- [ ] add docker-compose including an image for a local db so that shopify team can run the app w/o needing to create local postgres instance
+- [x] integration tests, and decent unit test coverage
+- [x] add docker-compose including test db image
+- [x] CI/CD
+- [ ] refactor save_file and get_file handlers to eliminate duplicate code
+- [ ] general cleanup
 
-## Run app locally
-* TODO: Once docker-compose is working for local development / testing, put command here
-
-## Run backend (must have built frontend locally, see frontend/README.md)
+## Run unit and integration tests
 ```bash
-cd backend
-go run main.go
+docker-compose -f docker-compose-test.yaml up --build
 ```
-
 ### Deploying to Prod
-We currently deploy through CI only. This is triggered by merging a PR into the `prod` branch.
+Currently deploy through CI only. This is triggered by merging a PR into master
 
 ## Graphql 
+On dev mode you can GET at `/graphql` to use graphql playground
 
-On dev mode you can GET at `/graphql` to get graphql playground
+## Run app locally *unavailable for public use
+* I could easily make a docker-compose for this (ie. to handle the dependencies), but the app relies on being able to access my gcloud account through a google application credentials file which would be an issue.
 
-## Architecture
-
-This can be read at `ARCHITECTURE.md`
-
-## Migrate
+## Migrate (for local db)
 ### Migrate db
 ```bash
 cd backend
