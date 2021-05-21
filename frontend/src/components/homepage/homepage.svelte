@@ -33,9 +33,6 @@
 					</a>
 				</div>
 			</div>
-			<div id='demo-animation-placeholder'>
-				demo animation coming later
-			</div>
 		</div>
 	</div>
 </div>
