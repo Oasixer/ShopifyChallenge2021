@@ -2,8 +2,6 @@ package resolvers
 
 import (
 	"strconv"
-	"log"
-	"fmt"
 
 	graphql "github.com/graph-gophers/graphql-go"
 

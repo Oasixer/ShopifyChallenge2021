@@ -17,6 +17,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// TODO this is entirely duplicate code w/ save_file, need to add auth to this endpoint and refactor out the duplicate code
+
 type ClientDownloader struct {
 	cl           *storage.Client
 	projectID    string
@@ -28,12 +30,10 @@ type ClientDownloader struct {
 var downloader *ClientDownloader
 
 func init() {
-	log.Printf("init handler %s", config.CONFIG.Mode)
+	// TODO update this logic to be more robust
 	if config.CONFIG.Mode == "test" || config.CONFIG.Mode == "" {
-		log.Printf("tripped", config.CONFIG.Mode)
 		return
 	}
-	log.Printf("DONT WANNA SEE THIS", config.CONFIG.Mode)
 	if config.CONFIG.Mode == "dev" {
 		os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/home/k/Downloads/triple-skein-312919-cee9b170f894.json") // temp
 	}

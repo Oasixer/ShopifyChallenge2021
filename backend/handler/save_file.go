@@ -16,6 +16,8 @@ import (
 	"github.com/google/uuid"
 )
 
+// TODO this is entirely duplicate code w/ get_file, need to add auth to this endpoint and refactor out the duplicate code
+
 const (
 	projectID  = "triple-skein-312919" // TODO move these to config
 	bucketName = "shopify_imghub"
@@ -33,10 +35,8 @@ var uploader *ClientUploader
 func init() {
 	log.Printf("init handler %s", config.CONFIG.Mode)
 	if config.CONFIG.Mode == "test" || config.CONFIG.Mode == "" {
-		log.Printf("tripped", config.CONFIG.Mode)
 		return
 	}
-	log.Printf("DONT WANNA SEE THIS", config.CONFIG.Mode)
 	if config.CONFIG.Mode == "dev" {
 		os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/home/k/Downloads/triple-skein-312919-cee9b170f894.json") // temp
 	}
@@ -54,7 +54,6 @@ func init() {
 }
 
 func SaveFile(c *gin.Context) {
-	log.Print("hi wtf")
 	f, err := c.FormFile("file_input")
 
 	if err != nil {
