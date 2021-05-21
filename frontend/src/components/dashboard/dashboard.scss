@@ -47,15 +47,26 @@ div#dashboardMain{
 					div.dashboardThumbLabelTags{
 						font-size: 15px;
 						color: #C4C4C4;				
-						*{
+						display: flex;
+						flex-flow: row wrap;
+						justify-content: flex-start;
+						width: 100%;
+						div.tagContain{
 							margin: 0;
 							padding: 0;
-						}
-						span.matched{
-							text-decoration: underline;
-						}
-						span.unmatched{
-							text-decoration: none;
+							width: fit-content;
+							display: flex;
+							flex-flow: row nowrap;
+							justify-content: flex-start;
+							span.matched{
+								text-decoration: underline;
+							}
+							span.unmatched{
+								text-decoration: none;
+							}
+							&.notLast{
+								margin-right: 4px;
+							}
 						}
 					}
 				}

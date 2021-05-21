@@ -12,6 +12,7 @@
 	$: hasNoImages = loaded && !files.length;
 
 	let searchtext='';
+	let filterText='';
 
 	// let filterText='';
 
@@ -25,6 +26,13 @@
 		// }
 		// return false;
 	// }
+		//
+	$: showFile = (file) => {
+		if (!filterText){
+			return true;
+		}
+		return numMatches(file.tags) !== 0;
+	}
 		
 	const search = () => {
 		console.log('HIASJIDOASJOD');
@@ -104,11 +112,11 @@
 		});
 		files.sort(function(a, b) {
 			console.log(`a.matchs ${numMatches(a.tags)} b.matchs ${numMatches(a.tags)}`);
-			if (b.matchStart > a.matchStart){
+			if (numMatches(b.tags) > numMatches(a.tags)){
 				console.log('1 (CHANGE)');
 				return 1;
 			}
-			else if (a.matchStart > b.matchStart)
+			else if (numMatches(a.tags) > numMatches(b.tags))
 			{
 				return -1;
 			}
@@ -150,10 +158,10 @@
 		return tags;
 	}
 
-	const getPreMatchChars = (tag) => {
+	const getPreMatchChars = (tag, last) => {
 		console.log(`getPreM -> tag: : ${JSON.stringify(tag)} matchStart: ${tag.matchStart}`);
 		if (tag.matchStart == -1){
-			return tag.name
+			return tag.name;
 		}
 			// console.log(`prem: ${tag.name.slice(0, tag.matchStart)}`);
 		return tag.name.slice(0, tag.matchStart);
@@ -161,16 +169,16 @@
 	const getMatchChars = (tag) => {
 		console.log(`getmatch: : ${JSON.stringify(tag)} matchStart: ${tag.matchStart}`);
 		if (tag.matchStart === -1){
-			return ''
+			return '';
 		}
-			console.log(`match: ${tag.name.slice(tag.matchStart, tag.matchStart+focused.name.length)}`);
-		return tag.name.slice(tag.matchStart, tag.matchStart+focused.name.length);
+			console.log(`match: ${tag.name.slice(tag.matchStart, tag.matchStart+searchtext.length)}`);
+		return tag.name.slice(tag.matchStart, tag.matchStart+searchtext.length);
 	}
 	const getPostMatchChars = (tag) => {
 		if (tag.matchStart == -1){
 			return ''
 		}
-		return tag.name.slice(tag.matchStart+focused.name.length, tag.name.length);
+		return tag.name.slice(tag.matchStart+searchtext.length, tag.name.length);
 	}
 	
 
@@ -183,21 +191,25 @@
 		<Searchbar bind:searchtext on:search={search}/>
 		<div class='dashboardImages'>
 			{#each filterFiles(files) as img}
-				<div class='dashboardThumb'>
-					<img src='{img.data}' alt='image{img.name}'/>
-					<div class='dashboardThumbLabel'>
-						<div class='dashboardThumbLabelTitle'>
-							{img.name}
-						</div>
-						<div class='dashboardThumbLabelTags'>
-							{#each img.tags as tag, n}
-								<span class='unmatched tag'>{getPreMatchChars(tag)}</span>
-								<span class='matched tag'>{getMatchChars(tag)}</span>
-								<span class='unmatched tag'>{getPostMatchChars(tag)}{n===img.tags.length-1?'':','}</span>
-							{/each}
+				{#if showFile(img)}
+					<div class='dashboardThumb'>
+						<img src='{img.data}' alt='image{img.name}'/>
+						<div class='dashboardThumbLabel'>
+							<div class='dashboardThumbLabelTitle'>
+								{img.name}
+							</div>
+							<div class='dashboardThumbLabelTags'>
+								{#each img.tags as tag, n}
+									<div class='tagContain' class:notLast={n!==img.tags.length-1}>
+										<span class='unmatched tag'>{getPreMatchChars(tag)}</span>
+										<span class='matched tag'>{getMatchChars(tag)}</span>
+										<span class='unmatched tag'>{getPostMatchChars(tag)}{n===img.tags.length-1?'':','}</span>
+									</div>
+								{/each}
+							</div>
 						</div>
 					</div>
-				</div>
+				{/if}
 			{/each}
 		</div>
 		<div class='noImagesText'>
