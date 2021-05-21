@@ -3,7 +3,7 @@
 I fixed all the problems / incomplete features with this app (after the deadline), see ['v2' branch instead](htts)
 
 ## Old README
-~~Unfortunately, I let the scope of this project creep too wide to wrap it up in a satisfactory way by the deadline. However, you can see a live, semi-working demo of what I have, here: ~~
+~~Unfortunately, I let the scope of this project creep too wide to wrap it up in a satisfactory way by the deadline. However, you can see a live, semi-working demo of what I have, here~~
 https://shopify2021-57nddaoela-ue.a.run.app
 
 Feature completion
