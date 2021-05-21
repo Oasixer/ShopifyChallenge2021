@@ -16,6 +16,8 @@ Feature completion
 - [x] add docker-compose including test db image
 - [x] CI/CD
 - [ ] refactor save_file and get_file handlers to eliminate duplicate code
+- [ ] server side input validation
+- [ ] client side input validation
 - [ ] general cleanup
 
 ## Run unit and integration tests
